@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Tidy Tuesday: Week 40</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Data Analysis Portfolio</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="./aboutme.html">About Me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./rcoding.html">R Coding</a>
+    </li>
+    <li>
+      <a href="./visualization.html">Visualization</a>
+    </li>
+    <li>
+      <a href="./tidytuesday.html">Tidy Tuesday</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="URL-TO-THIS-REPOSITORY-HERE">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Tidy Tuesday: Week 40</h1>
+
+</div>
+
+
+<div id="packages-needed-for-this-excersise" class="section level2">
+<h2>Packages needed for this excersise</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytuesdayR) <span class="co">#to load data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nberwp) <span class="co">#to clean and arrange data</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
+## ✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes) <span class="co">#for cool graphs</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd) <span class="co"># to create mosaic plots</span></span></code></pre></div>
+<pre><code>## Loading required package: grid</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(remotes) <span class="co"># to download package from github</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># To download gender package; do the following:</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;lmullen/gender&quot;</span>)</span></code></pre></div>
+<pre><code>## Skipping install of &#39;gender&#39; from a github remote, the SHA1 (92648829) has not changed since last install.
+##   Use `force = TRUE` to force installation</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;lmullen/genderdata&quot;</span>)</span></code></pre></div>
+<pre><code>## Skipping install of &#39;genderdata&#39; from a github remote, the SHA1 (f598c840) has not changed since last install.
+##   Use `force = TRUE` to force installation</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gender)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(genderdata)</span></code></pre></div>
+</div>
+<div id="downloading-data" class="section level1">
+<h1>Downloading Data</h1>
+<p>Follow the instructions on the tidytuesday github. I ended up manually downloading from the pathway because the tidyverse data was not coming up for week 40.</p>
+<p>This data comes from the National Bureau of Economic Research (NBER). In the original data set there are a couple individual data sets, that look at papers published, title, name, and date published. For more information check out the data dictionary included in the github repository.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The following was taken from the Tidy Tuesday github</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>papers <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/papers.csv&#39;</span>)</span></code></pre></div>
+<pre><code>## Rows: 29434 Columns: 4</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): paper, title
+## dbl (2): year, month</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/authors.csv&#39;</span>)</span></code></pre></div>
+<pre><code>## Rows: 15437 Columns: 4</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (4): author, name, user_nber, user_repec</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>programs <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/programs.csv&#39;</span>)</span></code></pre></div>
+<pre><code>## Rows: 21 Columns: 3</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (3): program, program_desc, program_category</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>paper_authors <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_authors.csv&#39;</span>)</span></code></pre></div>
+<pre><code>## Rows: 67090 Columns: 2</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): paper, author</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>paper_programs <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_programs.csv&#39;</span>)</span></code></pre></div>
+<pre><code>## Rows: 53996 Columns: 2</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): paper, program</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div id="cleaning" class="section level1">
+<h1>Cleaning</h1>
+<p>The github repository includes instruction on cleaning data. See below.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>joined_df <span class="ot">&lt;-</span> <span class="fu">left_join</span>(papers, paper_authors) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(authors) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(paper_programs) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(programs)<span class="sc">%&gt;%</span> </span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">catalogue_group =</span> <span class="fu">str_sub</span>(paper, <span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">catalogue_group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>      catalogue_group <span class="sc">==</span> <span class="st">&quot;h&quot;</span> <span class="sc">~</span> <span class="st">&quot;Historical&quot;</span>,</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>      catalogue_group <span class="sc">==</span> <span class="st">&quot;t&quot;</span> <span class="sc">~</span> <span class="st">&quot;Technical&quot;</span>,</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>      catalogue_group <span class="sc">==</span> <span class="st">&quot;w&quot;</span> <span class="sc">~</span> <span class="st">&quot;General&quot;</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">.after =</span> paper</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div>
+<pre><code>## Joining, by = &quot;paper&quot;</code></pre>
+<pre><code>## Joining, by = &quot;author&quot;</code></pre>
+<pre><code>## Joining, by = &quot;paper&quot;</code></pre>
+<pre><code>## Joining, by = &quot;program&quot;</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>joined_df</span></code></pre></div>
+<pre><code>## # A tibble: 130,081 × 12
+##    paper catalogue_group  year month title     author name  user_nber user_repec
+##    &lt;chr&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;     
+##  1 w0001 General          1973     6 Educatio… w0001… Fini… finis_we… &lt;NA&gt;      
+##  2 w0002 General          1973     6 Hospital… w0002… Barr… barry_ch… pch425    
+##  3 w0003 General          1973     6 Error Co… w0003… Swar… swarnjit… &lt;NA&gt;      
+##  4 w0004 General          1973     7 Human Ca… w0004… Lee … &lt;NA&gt;      pli669    
+##  5 w0005 General          1973     7 A Life C… w0005… Jame… james_sm… psm28     
+##  6 w0006 General          1973     7 A Review… w0006… Vict… victor_z… &lt;NA&gt;      
+##  7 w0007 General          1973     8 The Defi… w0007… Lewi… &lt;NA&gt;      &lt;NA&gt;      
+##  8 w0008 General          1973     9 Multinat… w0008… Merl… &lt;NA&gt;      &lt;NA&gt;      
+##  9 w0008 General          1973     9 Multinat… w0008… Robe… robert_l… pli259    
+## 10 w0009 General          1973     9 From Age… w0004… Lee … &lt;NA&gt;      pli669    
+## # … with 130,071 more rows, and 3 more variables: program &lt;chr&gt;,
+## #   program_desc &lt;chr&gt;, program_category &lt;chr&gt;</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">#In this code we are basically joining all the papers together and renaming the catalogue group</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(joined_df)</span></code></pre></div>
+<pre><code>##     paper           catalogue_group         year          month       
+##  Length:130081      Length:130081      Min.   :1973   Min.   : 1.000  
+##  Class :character   Class :character   1st Qu.:2005   1st Qu.: 4.000  
+##  Mode  :character   Mode  :character   Median :2013   Median : 6.000  
+##                                        Mean   :2010   Mean   : 6.515  
+##                                        3rd Qu.:2018   3rd Qu.: 9.000  
+##                                        Max.   :2021   Max.   :12.000  
+##     title              author              name            user_nber        
+##  Length:130081      Length:130081      Length:130081      Length:130081     
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##   user_repec          program          program_desc       program_category  
+##  Length:130081      Length:130081      Length:130081      Length:130081     
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+## </code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(joined_df)</span></code></pre></div>
+<pre><code>## tibble [130,081 × 12] (S3: tbl_df/tbl/data.frame)
+##  $ paper           : chr [1:130081] &quot;w0001&quot; &quot;w0002&quot; &quot;w0003&quot; &quot;w0004&quot; ...
+##  $ catalogue_group : chr [1:130081] &quot;General&quot; &quot;General&quot; &quot;General&quot; &quot;General&quot; ...
+##  $ year            : num [1:130081] 1973 1973 1973 1973 1973 ...
+##  $ month           : num [1:130081] 6 6 6 7 7 7 8 9 9 9 ...
+##  $ title           : chr [1:130081] &quot;Education, Information, and Efficiency&quot; &quot;Hospital Utilization: An Analysis of SMSA Differences in Hospital Admission Rates, Occupancy Rates and Bed Rates&quot; &quot;Error Components Regression Models and Their Applications&quot; &quot;Human Capital Life Cycle of Earnings Models: A Specific Solution and Estimation&quot; ...
+##  $ author          : chr [1:130081] &quot;w0001.1&quot; &quot;w0002.1&quot; &quot;w0003.1&quot; &quot;w0004.1&quot; ...
+##  $ name            : chr [1:130081] &quot;Finis Welch&quot; &quot;Barry R Chiswick&quot; &quot;Swarnjit S Arora&quot; &quot;Lee A Lillard&quot; ...
+##  $ user_nber       : chr [1:130081] &quot;finis_welch&quot; &quot;barry_chiswick&quot; &quot;swarnjit_arora&quot; NA ...
+##  $ user_repec      : chr [1:130081] NA &quot;pch425&quot; NA &quot;pli669&quot; ...
+##  $ program         : chr [1:130081] NA NA NA NA ...
+##  $ program_desc    : chr [1:130081] NA NA NA NA ...
+##  $ program_category: chr [1:130081] NA NA NA NA ...</code></pre>
+</div>
+<div id="exploratory-data-analysis" class="section level1">
+<h1>Exploratory data analysis</h1>
+<p>First I want to get a quick visualization of the years that papers were published</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(joined_df, <span class="fu">aes</span>(<span class="at">x=</span>year)) <span class="sc">+</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title=</span> <span class="st">&quot;Number of NBER Published Papers by Year&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Number of Papers Published&quot;</span>) <span class="sc">+</span>  </span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_wsj</span>()  <span class="co">#Just discovered this theme and I will never go back!</span></span></code></pre></div>
+<p><img src="tidytuesday_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Looks like there were quite a few papers published in 2020. Lets take a close look at the data from 2020</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>newyr <span class="ot">&lt;-</span> joined_df[ <span class="fu">which</span>(joined_df<span class="sc">$</span>year<span class="sc">==</span><span class="st">&quot;2020&quot;</span>), ]</span></code></pre></div>
+<p>I dont nknow too much about the categories, so lets look at them individually</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(newyr<span class="sc">$</span>program_desc)</span></code></pre></div>
+<pre><code>## 
+##                                  Asset Pricing 
+##                                            685 
+##                                       Children 
+##                                            436 
+##                              Corporate Finance 
+##                                            768 
+##                          Development Economics 
+##                                            627 
+##            Development of the American Economy 
+##                                            280 
+##               Economic Fluctuations and Growth 
+##                                           1286 
+##                             Economics of Aging 
+##                                            360 
+##                         Economics of Education 
+##                                            443 
+##               Environment and Energy Economics 
+##                                            306 
+##                                    Health Care 
+##                                            604 
+##                               Health Economics 
+##                                           1022 
+##                        Industrial Organization 
+##                                            459 
+##       International Finance and Macroeconomics 
+##                                            560 
+##             International Trade and Investment 
+##                                            403 
+##                                  Labor Studies 
+##                                           1322 
+##                              Law and Economics 
+##                                            314 
+##                             Monetary Economics 
+##                                            669 
+##                            Political Economics 
+##                                            516 
+## Productivity, Innovation, and Entrepreneurship 
+##                                            618 
+##                               Public Economics 
+##                                           1437 
+##                       Technical Working Papers 
+##                                            102</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(newyr<span class="sc">$</span>program)</span></code></pre></div>
+<pre><code>## 
+##   AG   AP   CF   CH  DAE  DEV   ED  EEE  EFG   HC   HE  IFM   IO  ITI   LE   LS 
+##  360  685  768  436  280  627  443  306 1286  604 1022  560  459  403  314 1322 
+##   ME   PE  POL   PR  TWP 
+##  669 1437  516  618  102</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(newyr<span class="sc">$</span>program_category)</span></code></pre></div>
+<pre><code>## 
+##             Finance Macro/International               Micro 
+##                1453                2918                8744</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The most interesting seem to be program_category &amp; program_desc</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Since there is not to much flexibility we can do with categorical data</span></span></code></pre></div>
+<div id="eda-infer-gender" class="section level2">
+<h2>EDA: Infer gender</h2>
+<p>Since this has a good bit of categorical data, I am going to use the “gender” package to determine the gender of the authors For some background on the package, it was created by <span class="citation">@lmullen</span> and uses historical data to infer sex assigned at birth based on first names. Since it was taken down from ropensci.org, you need to download it directly from <span class="citation">@lmullens</span> github.</p>
+<p>When loading this package, make a note the description warning as it is important. I personally would not use this package outside of this class exercise and only for large population.</p>
+<pre><code>&quot;Infers state-recorded gender categories from first names and dates of birth using historical
+datasets. By using these datasets instead of lists of male and female names,
+this package is able to more accurately infer the gender of a name, and it
+is able to report the probability that a name was male or female. GUIDELINES:
+This method must be used cautiously and responsibly.&quot;</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First we need to split names into first and last</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>namesplit <span class="ot">&lt;-</span> <span class="fu">extract</span>(joined_df, name, <span class="fu">c</span>(<span class="st">&quot;FirstName&quot;</span>, <span class="st">&quot;LastName&quot;</span>), <span class="st">&quot;([^ ]+) (.*)&quot;</span>)   </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Now lets run the code to predict gender</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">gender_df</span>(namesplit, <span class="at">name_col =</span> <span class="st">&quot;FirstName&quot;</span>, <span class="at">year_col =</span> <span class="st">&quot;year&quot;</span>, <span class="at">method =</span> <span class="st">&quot;ssa&quot;</span>) <span class="co"># ssa is data from social security administration from the genderdata package</span></span></code></pre></div>
+<pre><code>## Warning: The `.dots` argument of `group_by()` is deprecated as of dplyr 1.0.0.</code></pre>
+<pre><code>## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
+## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
+
+## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
+## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
+
+## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
+## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
+
+## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
+## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
+
+## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
+## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
+
+## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
+## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
+
+## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
+## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
+
+## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
+## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
+
+## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
+## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(results) <span class="co">#looks good!</span></span></code></pre></div>
+</div>
+</div>
+<div id="graphing" class="section level1">
+<h1>Graphing</h1>
+<p>Now I want to see the number of papers published by females vs. males over time</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(results, <span class="fu">aes</span>(<span class="at">x=</span>year_max, <span class="at">fill=</span>gender)) <span class="sc">+</span> <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">labs</span>(<span class="at">title=</span> <span class="st">&quot;Published NBER Papers by Gender from 1973-2021&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylab</span>(<span class="st">&quot;Number of Papers Published&quot;</span>) <span class="sc">+</span>           </span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme_wsj</span>() <span class="sc">+</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set1&quot;</span>)</span></code></pre></div>
+<p><img src="tidytuesday_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

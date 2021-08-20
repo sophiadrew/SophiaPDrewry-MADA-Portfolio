@@ -1,0 +1,108 @@
+---
+title: "R coding Exercise"
+output: 
+  html_document:
+    toc: FALSE
+    theme: readable
+    highlight: tango
+---
+
+#View Data
+```{r}
+
+#Load "dslabs" package to manipulate data
+library("dslabs")
+library("tidyverse")
+
+#Check out the help file in gapminder
+help(gapminder)
+
+#Lets get an overview of the data
+str(gapminder)
+
+#Now for a summary of the data
+summary(gapminder)
+
+#To see what type of object gapminder is, we use the class function
+class(gapminder)
+
+```
+#Createign a data subset
+
+```{r}
+
+#Now let look at only the African countries
+africadata <- gapminder[ which(gapminder$continent=="Africa"), ]
+
+#Lets get an overview & summary of the new data
+str(africadata)
+summary(africadata)
+
+#Making two new data frames
+imle <- africadata[c("infant_mortality","life_expectancy")]
+ple <- africadata[c("population","life_expectancy")]
+
+#Overview of new sets
+str(imle)
+str(ple)
+
+#Summary of new sets
+summary(imle)
+summary(ple)
+
+```
+
+#Plotting the variables
+
+```{r}
+#life expectancy vs. infant mortality
+ggplot(imle, aes(infant_mortality, life_expectancy)) + geom_point()
+
+#Here we have a negative correlation
+
+#life expectancy vs. population
+ggplot(ple, aes(population, life_expectancy)) + geom_point() +scale_x_log10()
+
+#Here we have a loose positive correlation. Notice the "streaks" in the data
+```
+
+#Data cleaning
+```{r}
+
+#Use the is.na function to see what data we are missing
+africadata$year[is.na(africadata$infant_mortality)]
+
+#Creating a datafram that only includes data from year 2000
+newyr <- africadata[africadata$year=="2000", c("country", "year", "infant_mortality", "life_expectancy", "fertility", "population", "gdp", "continent", "region")]
+
+#Check the structure and summary
+str(newyr)
+summary(newyr)
+```
+#Plotting with new subset
+```{r}
+
+#Plot new dataframe, same variable as before
+#Life expectancy vs. Infant Mortality 2000 plot
+plot(infant_mortality ~ life_expectancy, data=newyr)
+
+#Life expectancy vs. Population 2000 plot
+plot(life_expectancy ~ population, data=newyr, log = "x")
+#no relationship
+
+#Lets create fitted lines for the life expectancy outcome
+
+#Life expectancy vs. Infant Mortality 2000
+fit1<- lm(formula = life_expectancy ~ infant_mortality, data = newyr)
+
+#Life expectancy vs. Population 2000
+fit2<- lm(formula = life_expectancy ~ population, data = newyr)
+
+#summary(fit1)
+
+#summary(fit2)
+
+```
+#After looking at P-values for both, it appears that the correlation between Infant Mortality and Life Expectancy has a P-val <0.05 and is a better predictor than Population, which has a P-val >0.05.
+
+

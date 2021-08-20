@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Visualization</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Data Analysis Portfolio</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="./aboutme.html">About Me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./rcoding.html">R Coding</a>
+    </li>
+    <li>
+      <a href="./visualization.html">Visualization</a>
+    </li>
+    <li>
+      <a href="./tidytuesday.html">Tidy Tuesday</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="URL-TO-THIS-REPOSITORY-HERE">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Visualization</h1>
+
+</div>
+
+
+<p>How Americans View Biden’s Response To The Coronavirus Crisis</p>
+<p><a href="https://projects.fivethirtyeight.com/coronavirus-polls/">Here</a> is the original article <a href="https://github.com/fivethirtyeight/covid-19-polls">Here</a> is the github repository</p>
+<p>This is the table I am trying to replicate</p>
+<p><img src="GraphIWant.png" /></p>
+<div id="load-packages" class="section level1">
+<h1>Load packages</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr) <span class="co"># to put this on my website</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) </span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2) </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here) <span class="co">#to define paths</span></span></code></pre></div>
+<pre><code>## here() starts at /Users/sophiadrewry/Documents/School/Fall 2021/MADA/SophiaPDrewry-MADA-Portfolio</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate) <span class="co">#to arrange date form of data</span></span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+</div>
+<div id="load-data" class="section level1">
+<h1>Load data</h1>
+<p>This data can be found on FiveThirtyEight’s github page. I used the adjusted verion Now lets load the data</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dataspot1 <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;covid_approval_polls_adjusted.csv&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>covid_approval_polls_adjusted <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(dataspot1)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This dataset includes the approval and disapproval scores</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>dataspot2 <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;covid_approval_toplines.csv&quot;</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>covid_approval_toplines <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(dataspot2) </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># This data set is for the line</span></span></code></pre></div>
+</div>
+<div id="clean-data" class="section level1">
+<h1>Clean data</h1>
+<p>Lets get an overview of the data</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(covid_approval_polls_adjusted)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    2782 obs. of  19 variables:
+##  $ subject            : chr  &quot;Biden&quot; &quot;Biden&quot; &quot;Biden&quot; &quot;Biden&quot; ...
+##  $ modeldate          : chr  &quot;9/21/2021&quot; &quot;9/21/2021&quot; &quot;9/21/2021&quot; &quot;9/21/2021&quot; ...
+##  $ party              : chr  &quot;D&quot; &quot;D&quot; &quot;D&quot; &quot;D&quot; ...
+##  $ startdate          : chr  &quot;1/24/2021&quot; &quot;1/28/2021&quot; &quot;1/29/2021&quot; &quot;1/31/2021&quot; ...
+##  $ enddate            : chr  &quot;1/26/2021&quot; &quot;2/1/2021&quot; &quot;2/1/2021&quot; &quot;2/2/2021&quot; ...
+##  $ pollster           : chr  &quot;YouGov&quot; &quot;Quinnipiac University&quot; &quot;Morning Consult&quot; &quot;YouGov&quot; ...
+##  $ grade              : chr  &quot;B+&quot; &quot;A-&quot; &quot;B&quot; &quot;B+&quot; ...
+##  $ samplesize         : num  477 333 808 484 564 ...
+##  $ population         : chr  &quot;a&quot; &quot;a&quot; &quot;rv&quot; &quot;a&quot; ...
+##  $ weight             : num  0.629 0.632 0.834 0.549 0.888 ...
+##  $ influence          : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ multiversions      : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+##  $ tracking           : logi  NA NA NA NA NA NA ...
+##  $ approve            : num  84 93 89 88 89.2 ...
+##  $ disapprove         : num  3 5 7 7 7.14 8 5 5 3 2 ...
+##  $ approve_adjusted   : num  86.9 92 90.3 90.9 89.6 ...
+##  $ disapprove_adjusted: num  2.43 5.7 6.4 6.43 6.68 ...
+##  $ timestamp          : chr  &quot;20:55:08 21 Sep 2021&quot; &quot;20:55:08 21 Sep 2021&quot; &quot;20:55:08 21 Sep 2021&quot; &quot;20:55:08 21 Sep 2021&quot; ...
+##  $ url                : chr  &quot;https://docs.cdn.yougov.com/ld46rgtdlz/econTabReport.pdf&quot; &quot;https://poll.qu.edu/national/release-detail?ReleaseID=3688&quot; &quot;https://assets.morningconsult.com/wp-uploads/2021/02/03074817/2101110_crosstabs_POLITICO_RVs_v1.pdf&quot; &quot;https://docs.cdn.yougov.com/460mactkmh/econTabReport.pdf&quot; ...</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(covid_approval_toplines)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    3300 obs. of  6 variables:
+##  $ subject            : chr  &quot;Trump&quot; &quot;Biden&quot; &quot;Trump&quot; &quot;Biden&quot; ...
+##  $ modeldate          : chr  &quot;9/21/2021&quot; &quot;9/21/2021&quot; &quot;9/21/2021&quot; &quot;9/21/2021&quot; ...
+##  $ party              : chr  &quot;all&quot; &quot;all&quot; &quot;R&quot; &quot;R&quot; ...
+##  $ approve_estimate   : num  38.9 52 76.8 19.5 35.9 ...
+##  $ disapprove_estimate: num  57 42.7 20 76.9 57.5 ...
+##  $ timestamp          : chr  &quot;20:55:28 21 Sep 2021&quot; &quot;20:55:22 21 Sep 2021&quot; &quot;20:55:21 21 Sep 2021&quot; &quot;20:55:17 21 Sep 2021&quot; ...</code></pre>
+</div>
+<div id="lets-make-the-data-more-managable" class="section level1">
+<h1>Lets make the data more managable</h1>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>biden <span class="ot">&lt;-</span> covid_approval_polls_adjusted <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">filter</span>(subject <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Biden&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">filter</span>(party <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;all&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>     <span class="fu">select</span>(startdate, approve_adjusted, disapprove_adjusted)</span></code></pre></div>
+</div>
+<div id="convert-character-into-date-format-using-lubridate-package" class="section level1">
+<h1>Convert character into date format using lubridate package</h1>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Well after an hour of running code that does not work, I figured out that the problem was that the date is not in &quot;date&quot; form</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># headbang</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># headbang</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># headbang</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>biden<span class="sc">$</span>startdate <span class="ot">&lt;-</span> <span class="fu">mdy</span>(biden<span class="sc">$</span>startdate)     </span></code></pre></div>
+</div>
+<div id="now-lets-build-out-plot" class="section level1">
+<h1>Now lets build out plot</h1>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Hex code for colors are </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Orange = #EF813F</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Purple = #D78CDB</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>     <span class="fu">geom_point</span>(<span class="at">data =</span> biden, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>startdate, <span class="at">y=</span>approve_adjusted), <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="st">&quot;#EF813F&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>     <span class="fu">geom_point</span>(<span class="at">data =</span> biden, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>startdate, <span class="at">y=</span>disapprove_adjusted), <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="st">&quot;#D78CDB&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>     <span class="fu">xlab</span>(<span class="st">&quot; &quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>     <span class="fu">ylab</span>(<span class="st">&quot; &quot;</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">20</span>, <span class="dv">80</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># No x or y axis titles because there are none in the model graph</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(s1)</span></code></pre></div>
+<p><img src="visualization_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="now-to-do-a-similar-process-with-the-line-data" class="section level1">
+<h1>Now to do a similar process with the line data</h1>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>bidenline <span class="ot">&lt;-</span> covid_approval_toplines <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">filter</span>(subject <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Biden&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">filter</span>(party <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;all&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>     <span class="fu">select</span>(modeldate, approve_estimate, disapprove_estimate)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Proper date format</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>bidenline<span class="sc">$</span>modeldate <span class="ot">&lt;-</span> <span class="fu">mdy</span>(bidenline<span class="sc">$</span>modeldate) <span class="co"># Will not forget this again!</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Now for the plot</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>l1 <span class="ot">=</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">data =</span> bidenline, <span class="fu">aes</span>(<span class="at">x =</span> modeldate, <span class="at">y =</span> approve_estimate), <span class="at">color =</span> <span class="st">&quot;#EF813F&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">data =</span> bidenline, <span class="fu">aes</span>(<span class="at">x =</span> modeldate, <span class="at">y =</span> disapprove_estimate), <span class="at">color =</span> <span class="st">&quot;#D78CDB&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot; &quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot; &quot;</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">20</span>, <span class="dv">80</span>)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(l1)</span></code></pre></div>
+<p><img src="visualization_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="ok-this-is-looking-good.-now-to-combine-both-graphs" class="section level1">
+<h1>Ok this is looking good. Now to combine both graphs</h1>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>BigGraph <span class="ot">=</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> biden, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>startdate, <span class="at">y=</span>approve_adjusted), <span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">&quot;#EF813F&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> biden, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>startdate, <span class="at">y=</span>disapprove_adjusted), <span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">&quot;#D78CDB&quot;</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">data =</span> bidenline, <span class="fu">aes</span>(<span class="at">x =</span> modeldate, <span class="at">y =</span> approve_estimate), <span class="at">color =</span> <span class="st">&quot;#EF813F&quot;</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">data =</span> bidenline, <span class="fu">aes</span>(<span class="at">x =</span> modeldate, <span class="at">y =</span> disapprove_estimate), <span class="at">color =</span> <span class="st">&quot;#D78CDB&quot;</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot; &quot;</span>) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot; &quot;</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">20</span>, <span class="dv">80</span>) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_date</span>( <span class="at">date_breaks =</span> <span class="st">&quot;1 month&quot;</span>, <span class="at">date_labels =</span> <span class="st">&quot;%m/%d&quot;</span>) <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2021-01-21&quot;</span>), <span class="at">y =</span> <span class="dv">80</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">&quot;Biden sworn </span><span class="sc">\n</span><span class="st">into office&quot;</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="dv">1</span>,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">vjust =</span> <span class="dv">1</span>,</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2021-09-21&quot;</span>), <span class="at">y =</span> <span class="dv">42</span>, </span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">&quot;42.7% Disapprove&quot;</span>, </span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">&quot;#D78CDB&quot;</span>, </span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">4</span>, </span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="dv">2</span>,</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>           <span class="at">vjust =</span> <span class="dv">1</span>,</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2021-09-21&quot;</span>), <span class="at">y =</span> <span class="dv">51</span>, </span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">&quot;51.7% Approve&quot;</span>, </span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">&quot;#EF813F&quot;</span>, </span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">4</span>, </span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="dv">2</span>,</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>           <span class="at">vjust =</span> <span class="dv">1</span>,</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">0</span>)</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(BigGraph)</span></code></pre></div>
+<p><img src="visualization_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Lets compare to original graph</p>
+<p><img src="GraphIWant.png" /></p>
+</div>
+<div id="now-to-add-some-theme-elements" class="section level1">
+<h1>Now to add some theme elements</h1>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>BigGraph2 <span class="ot">=</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> biden, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>startdate, <span class="at">y=</span>approve_adjusted), <span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">&quot;#EF813F&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> biden, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>startdate, <span class="at">y=</span>disapprove_adjusted), <span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">&quot;#D78CDB&quot;</span>) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">data =</span> bidenline, <span class="fu">aes</span>(<span class="at">x =</span> modeldate, <span class="at">y =</span> approve_estimate), <span class="at">color =</span> <span class="st">&quot;#EF813F&quot;</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">data =</span> bidenline, <span class="fu">aes</span>(<span class="at">x =</span> modeldate, <span class="at">y =</span> disapprove_estimate), <span class="at">color =</span> <span class="st">&quot;#D78CDB&quot;</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot; &quot;</span>) <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot; &quot;</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">20</span>, <span class="dv">80</span>) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_light</span> (<span class="at">base_size=</span><span class="dv">12</span>, <span class="at">base_family=</span><span class="st">&quot;mono&quot;</span>) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;#D3D3D3&quot;</span>),</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),  </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.line.y.left =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">&quot;#D3D3D3&quot;</span>, <span class="at">linetype =</span> <span class="dv">2</span>),</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.line.y.right =</span> <span class="fu">element_line</span>(<span class="at">color =</span>    <span class="st">&quot;#D3D3D3&quot;</span>, <span class="at">linetype =</span> <span class="dv">2</span>),</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">colour =</span> <span class="st">&quot;#D3D3D3&quot;</span>),</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">colour =</span> <span class="st">&quot;#D3D3D3&quot;</span>),</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;#D3D3D3&quot;</span>),</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">aspect.ratio=</span><span class="dv">2</span><span class="sc">/</span><span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_date</span>( <span class="at">date_breaks =</span> <span class="st">&quot;1 month&quot;</span>, <span class="at">date_labels =</span> <span class="st">&quot;%m/%d&quot;</span>) <span class="sc">+</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2021-01-21&quot;</span>), <span class="at">y =</span> <span class="dv">80</span>,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">&quot;Biden sworn </span><span class="sc">\n</span><span class="st">into office&quot;</span>,</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="dv">1</span>,</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>           <span class="at">vjust =</span> <span class="dv">1</span>,</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2021-09-21&quot;</span>), <span class="at">y =</span> <span class="dv">42</span>, </span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">&quot;42.7% Disapprove&quot;</span>, </span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">&quot;#D78CDB&quot;</span>, </span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">4</span>, </span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="dv">2</span>,</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>           <span class="at">vjust =</span> <span class="dv">1</span>,</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2021-09-21&quot;</span>), <span class="at">y =</span> <span class="dv">51</span>, </span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">&quot;51.7% Approve&quot;</span>, </span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">&quot;#EF813F&quot;</span>, </span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">4</span>, </span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="dv">2</span>,</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>           <span class="at">vjust =</span> <span class="dv">1</span>,</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">0</span>) </span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(BigGraph2)</span></code></pre></div>
+<p><img src="visualization_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="save-all-my-hard-work" class="section level1">
+<h1>Save all my hard work</h1>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>figure_file <span class="ot">=</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;BigGraph2.png&quot;</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> figure_file, <span class="at">plot=</span>BigGraph2, <span class="at">dpi =</span> <span class="dv">300</span>) </span></code></pre></div>
+<pre><code>## Saving 7 x 5 in image</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

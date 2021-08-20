@@ -1,0 +1,128 @@
+---
+title: "Tidy Tuesday: Week 40"
+output: 
+  html_document:
+    toc: FALSE
+    theme: readable
+    highlight: tango
+---
+
+## Packages needed for this excersise
+```{R}
+library(tidytuesdayR) #to load data
+library(nberwp) #to clean and arrange data
+library(tidyverse)
+library(ggthemes) #for cool graphs
+library(vcd) # to create mosaic plots
+library(remotes) # to download package from github
+library(tidyr)
+
+# To download gender package; do the following:
+remotes::install_github("lmullen/gender")
+remotes::install_github("lmullen/genderdata")
+library(gender)
+library(genderdata)
+```
+
+# Downloading Data
+Follow the instructions on the tidytuesday github. 
+I ended up manually downloading from the pathway because the tidyverse data was not coming up for week 40.
+
+This data comes from the National Bureau of Economic Research (NBER). 
+In the original data set there are a couple individual data sets, that look at papers published, title, name, and date published. 
+For more information check out the data dictionary included in the github repository. 
+```{R}
+# The following was taken from the Tidy Tuesday github
+papers <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/papers.csv')
+authors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/authors.csv')
+programs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/programs.csv')
+paper_authors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_authors.csv')
+paper_programs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_programs.csv')
+```
+
+# Cleaning
+The github repository includes instruction on cleaning data. See below.
+```{R}
+
+joined_df <- left_join(papers, paper_authors) %>% 
+  left_join(authors) %>% 
+  left_join(paper_programs) %>% 
+  left_join(programs)%>% 
+  mutate(
+    catalogue_group = str_sub(paper, 1, 1),
+    catalogue_group = case_when(
+      catalogue_group == "h" ~ "Historical",
+      catalogue_group == "t" ~ "Technical",
+      catalogue_group == "w" ~ "General"
+    ),
+    .after = paper
+  ) 
+
+joined_df
+#In this code we are basically joining all the papers together and renaming the catalogue group
+
+summary(joined_df)
+str(joined_df)
+```
+
+# Exploratory data analysis
+First I want to get a quick visualization of the years that papers were published
+```{R}
+ggplot(joined_df, aes(x=year)) +
+    geom_bar() + 
+    labs(title= "Number of NBER Published Papers by Year") + 
+    xlab("Year") + ylab("Number of Papers Published") +  
+    theme_wsj()  #Just discovered this theme and I will never go back!
+```
+  
+Looks like there were quite a few papers published in 2020. Lets take a close look at the data from 2020
+```{R}
+newyr <- joined_df[ which(joined_df$year=="2020"), ]
+```
+I dont nknow too much about the categories, so lets look at them individually
+```{R}
+table(newyr$program_desc)
+table(newyr$program)
+table(newyr$program_category)
+# The most interesting seem to be program_category & program_desc
+# Since there is not to much flexibility we can do with categorical data
+```
+## EDA: Infer gender
+
+Since this has a good bit of categorical data, I am going to use the "gender" package to determine the gender of the authors
+For some background on the package, it was created by @lmullen and uses historical data to infer sex assigned at birth based on first names. Since it was taken down from ropensci.org, you need to download it directly from @lmullens github. 
+
+When loading this package, make a note the description warning as it is important. I personally would not use this package outside of this class exercise and only for large population. 
+
+    "Infers state-recorded gender categories from first names and dates of birth using historical
+    datasets. By using these datasets instead of lists of male and female names,
+    this package is able to more accurately infer the gender of a name, and it
+    is able to report the probability that a name was male or female. GUIDELINES:
+    This method must be used cautiously and responsibly."
+    
+```{R} 
+# First we need to split names into first and last
+   
+namesplit <- extract(joined_df, name, c("FirstName", "LastName"), "([^ ]+) (.*)")   
+
+# Now lets run the code to predict gender
+
+results <- gender_df(namesplit, name_col = "FirstName", year_col = "year", method = "ssa") # ssa is data from social security administration from the genderdata package
+
+view(results) #looks good!
+```
+# Graphing
+Now I want to see the number of papers published by females vs. males over time
+
+```{R}
+ggplot(results, aes(x=year_max, fill=gender)) + geom_bar() +
+   labs(title= "Published NBER Papers by Gender from 1973-2021") + 
+   xlab("Year") + 
+   ylab("Number of Papers Published") +           
+   theme_wsj() +
+   scale_fill_brewer(palette = "Set1")
+
+```
+
+
+

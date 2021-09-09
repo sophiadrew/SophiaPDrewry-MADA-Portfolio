@@ -13,6 +13,7 @@ output:
 #Load "dslabs" package to manipulate data
 library("dslabs")
 library("tidyverse")
+library("broom")
 
 #Check out the help file in gapminder
 help(gapminder)
@@ -27,7 +28,7 @@ summary(gapminder)
 class(gapminder)
 
 ```
-#Createign a data subset
+#Creating a data subset
 
 ```{r}
 
@@ -105,4 +106,54 @@ fit2<- lm(formula = life_expectancy ~ population, data = newyr)
 ```
 #After looking at P-values for both, it appears that the correlation between Infant Mortality and Life Expectancy has a P-val <0.05 and is a better predictor than Population, which has a P-val >0.05.
 
+#We've established that infant mortality is a good predictor of life expectancy. Other variables in this dataset include fertility and GDP - how do these variables relate to life expectancy? Could they be better predictors of life expectancy than infant mortality is? Let's explore this. 
 
+#Subset data
+```{r}
+#create subset of africadata containing fertility and life expectancy
+fle <- africadata %>% select("fertility", "life_expectancy")
+
+#create subset of africadata containing GDP and life expectancy
+gdple <- africadata %>% select("gdp", "life_expectancy")
+```
+
+#Create plots
+```{r}
+#create plot of fertility vs. life expectancy
+ggplot(fle, aes(fertility, life_expectancy)) + geom_point()
+
+#Here, we have a weak negative correlation
+
+#create plot of GDP vs. life expectancy
+ggplot(gdple, aes(gdp, life_expectancy)) + geom_point()
+
+#Here, we see a possible weak positive correlation, with a large of cluster of values on the lower end of the GDP range
+
+```
+#Fit a model
+```{r}
+#Let's look at how fertility and GDP perform as predictors of life expectancy using a linear model
+
+#Life expectancy vs fertility
+fit3 <- lm(formula = life_expectancy ~ fertility, data = fle)
+
+#Life expectancy vs GDP
+fit4 <- lm(formula = life_expectancy ~ gdp, data = gdple)
+
+#view summaries of fit3 and fit4
+summary(fit3)
+summary(fit4)
+
+```
+The summaries show that both fit3 and fit4 have a p-value of < 0.05, indicating that fertility and GDP may be good predictors of life expectancy. Let's display the `lm()` output as a table using the `broom` package.
+
+#Use `broom` to view fit results
+```{r}
+#View fertility vs life expectancy (fit3) results
+tidy(fit3)
+
+#View GDP vs life expectancy (fit4) results
+tidy(fit4)
+
+```
+After exploring the relationship between fertility and life expectancy and GDP and life expectancy, it appears that both fitted models have p-values of <0.05, indicating that fertility and GDP may also have an informative/predictive relationship with life expectancy. 

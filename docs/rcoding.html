@@ -13,6 +13,7 @@
 
 <title>R coding Exercise</title>
 
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
@@ -29,6 +30,7 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -51,26 +53,27 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -79,9 +82,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  { background-color: #f8f8f8; }
+  {  background-color: #f8f8f8; }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ef2929; } /* Alert */
 code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
@@ -366,22 +369,24 @@ $(document).ready(function () {
 
 
 <p>#View Data</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#Load &quot;dslabs&quot; package to manipulate data</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;dslabs&quot;</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#Load &quot;dslabs&quot; package to manipulate data</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(<span class="st">&quot;dslabs&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</span></code></pre></div>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
+## ✓ tibble  3.1.3     ✓ dplyr   1.0.7
 ## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
 ## ✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
 <pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">#Check out the help file in gapminder</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">help</span>(gapminder)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#Lets get an overview of the data</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw">str</span>(gapminder)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">library</span>(<span class="st">&quot;broom&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#Check out the help file in gapminder</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="kw">help</span>(gapminder)</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#Lets get an overview of the data</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="kw">str</span>(gapminder)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    10545 obs. of  9 variables:
 ##  $ country         : Factor w/ 185 levels &quot;Albania&quot;,&quot;Algeria&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
 ##  $ year            : int  1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...
@@ -392,8 +397,8 @@ $(document).ready(function () {
 ##  $ gdp             : num  NA 1.38e+10 NA NA 1.08e+11 ...
 ##  $ continent       : Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 4 1 1 2 2 3 2 5 4 3 ...
 ##  $ region          : Factor w/ 22 levels &quot;Australia and New Zealand&quot;,..: 19 11 10 2 15 21 2 1 22 21 ...</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">#Now for a summary of the data</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">summary</span>(gapminder)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">#Now for a summary of the data</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">summary</span>(gapminder)</span></code></pre></div>
 <pre><code>##                 country           year      infant_mortality life_expectancy
 ##  Albania            :   57   Min.   :1960   Min.   :  1.50   Min.   :13.20  
 ##  Algeria            :   57   1st Qu.:1974   1st Qu.: 16.00   1st Qu.:57.50  
@@ -418,15 +423,15 @@ $(document).ready(function () {
 ##  South America  : 684  
 ##  Southern Europe: 684  
 ##  (Other)        :5586</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co">#To see what type of object gapminder is, we use the class function</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">class</span>(gapminder)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#To see what type of object gapminder is, we use the class function</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="kw">class</span>(gapminder)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p>#Createign a data subset</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">#Now let look at only the African countries</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">africadata &lt;-<span class="st"> </span>gapminder[ <span class="kw">which</span>(gapminder<span class="op">$</span>continent<span class="op">==</span><span class="st">&quot;Africa&quot;</span>), ]</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#Lets get an overview &amp; summary of the new data</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="kw">str</span>(africadata)</a></code></pre></div>
+<p>#Creating a data subset</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">#Now let look at only the African countries</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>africadata &lt;-<span class="st"> </span>gapminder[ <span class="kw">which</span>(gapminder<span class="op">$</span>continent<span class="op">==</span><span class="st">&quot;Africa&quot;</span>), ]</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co">#Lets get an overview &amp; summary of the new data</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="kw">str</span>(africadata)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    2907 obs. of  9 variables:
 ##  $ country         : Factor w/ 185 levels &quot;Albania&quot;,&quot;Algeria&quot;,..: 2 3 18 22 26 27 29 31 32 33 ...
 ##  $ year            : int  1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...
@@ -437,7 +442,7 @@ $(document).ready(function () {
 ##  $ gdp             : num  1.38e+10 NA 6.22e+08 1.24e+08 5.97e+08 ...
 ##  $ continent       : Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ region          : Factor w/ 22 levels &quot;Australia and New Zealand&quot;,..: 11 10 20 17 20 5 10 20 10 10 ...</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">summary</span>(africadata)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">summary</span>(africadata)</span></code></pre></div>
 <pre><code>##          country          year      infant_mortality life_expectancy
 ##  Algeria     :  57   Min.   :1960   Min.   : 11.40   Min.   :13.20  
 ##  Angola      :  57   1st Qu.:1974   1st Qu.: 62.20   1st Qu.:48.23  
@@ -462,21 +467,21 @@ $(document).ready(function () {
 ##  Southern Africa          :285  
 ##  Australia and New Zealand:  0  
 ##  (Other)                  :  0</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co">#Making two new data frames</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">imle &lt;-<span class="st"> </span>africadata[<span class="kw">c</span>(<span class="st">&quot;infant_mortality&quot;</span>,<span class="st">&quot;life_expectancy&quot;</span>)]</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">ple &lt;-<span class="st"> </span>africadata[<span class="kw">c</span>(<span class="st">&quot;population&quot;</span>,<span class="st">&quot;life_expectancy&quot;</span>)]</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#Overview of new sets</span></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="kw">str</span>(imle)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#Making two new data frames</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>imle &lt;-<span class="st"> </span>africadata[<span class="kw">c</span>(<span class="st">&quot;infant_mortality&quot;</span>,<span class="st">&quot;life_expectancy&quot;</span>)]</span>
+<span id="cb15-3"><a href="#cb15-3"></a>ple &lt;-<span class="st"> </span>africadata[<span class="kw">c</span>(<span class="st">&quot;population&quot;</span>,<span class="st">&quot;life_expectancy&quot;</span>)]</span>
+<span id="cb15-4"><a href="#cb15-4"></a></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#Overview of new sets</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="kw">str</span>(imle)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    2907 obs. of  2 variables:
 ##  $ infant_mortality: num  148 208 187 116 161 ...
 ##  $ life_expectancy : num  47.5 36 38.3 50.3 35.2 ...</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">str</span>(ple)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">str</span>(ple)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    2907 obs. of  2 variables:
 ##  $ population     : num  11124892 5270844 2431620 524029 4829291 ...
 ##  $ life_expectancy: num  47.5 36 38.3 50.3 35.2 ...</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co">#Summary of new sets</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw">summary</span>(imle)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co">#Summary of new sets</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">summary</span>(imle)</span></code></pre></div>
 <pre><code>##  infant_mortality life_expectancy
 ##  Min.   : 11.40   Min.   :13.20  
 ##  1st Qu.: 62.20   1st Qu.:48.23  
@@ -485,7 +490,7 @@ $(document).ready(function () {
 ##  3rd Qu.:124.70   3rd Qu.:60.10  
 ##  Max.   :237.40   Max.   :77.60  
 ##  NA&#39;s   :226</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">summary</span>(ple)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">summary</span>(ple)</span></code></pre></div>
 <pre><code>##    population        life_expectancy
 ##  Min.   :    41538   Min.   :13.20  
 ##  1st Qu.:  1605232   1st Qu.:48.23  
@@ -495,20 +500,20 @@ $(document).ready(function () {
 ##  Max.   :182201962   Max.   :77.60  
 ##  NA&#39;s   :51</code></pre>
 <p>#Plotting the variables</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co">#life expectancy vs. infant mortality</span></a>
-<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="kw">ggplot</span>(imle, <span class="kw">aes</span>(infant_mortality, life_expectancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co">#life expectancy vs. infant mortality</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="kw">ggplot</span>(imle, <span class="kw">aes</span>(infant_mortality, life_expectancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
 <pre><code>## Warning: Removed 226 rows containing missing values (geom_point).</code></pre>
 <p><img src="rcoding_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co">#Here we have a negative correlation</span></a>
-<a class="sourceLine" id="cb25-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="co">#life expectancy vs. population</span></a>
-<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="kw">ggplot</span>(ple, <span class="kw">aes</span>(population, life_expectancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="kw">scale_x_log10</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co">#Here we have a negative correlation</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a></span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="co">#life expectancy vs. population</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a><span class="kw">ggplot</span>(ple, <span class="kw">aes</span>(population, life_expectancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="kw">scale_x_log10</span>()</span></code></pre></div>
 <pre><code>## Warning: Removed 51 rows containing missing values (geom_point).</code></pre>
 <p><img src="rcoding_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="co">#Here we have a loose positive correlation. Notice the &quot;streaks&quot; in the data</span></a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co">#Here we have a loose positive correlation. Notice the &quot;streaks&quot; in the data</span></span></code></pre></div>
 <p>#Data cleaning</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="co">#Use the is.na function to see what data we are missing</span></a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">africadata<span class="op">$</span>year[<span class="kw">is.na</span>(africadata<span class="op">$</span>infant_mortality)]</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co">#Use the is.na function to see what data we are missing</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>africadata<span class="op">$</span>year[<span class="kw">is.na</span>(africadata<span class="op">$</span>infant_mortality)]</span></code></pre></div>
 <pre><code>##   [1] 1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 1961 1961 1961 1961 1961
 ##  [16] 1961 1961 1961 1961 1961 1961 1961 1961 1961 1961 1961 1961 1962 1962 1962
 ##  [31] 1962 1962 1962 1962 1962 1962 1962 1962 1962 1962 1962 1962 1962 1963 1963
@@ -525,11 +530,11 @@ $(document).ready(function () {
 ## [196] 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016
 ## [211] 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 2016
 ## [226] 2016</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co">#Creating a datafram that only includes data from year 2000</span></a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">newyr &lt;-<span class="st"> </span>africadata[africadata<span class="op">$</span>year<span class="op">==</span><span class="st">&quot;2000&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;country&quot;</span>, <span class="st">&quot;year&quot;</span>, <span class="st">&quot;infant_mortality&quot;</span>, <span class="st">&quot;life_expectancy&quot;</span>, <span class="st">&quot;fertility&quot;</span>, <span class="st">&quot;population&quot;</span>, <span class="st">&quot;gdp&quot;</span>, <span class="st">&quot;continent&quot;</span>, <span class="st">&quot;region&quot;</span>)]</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="co">#Check the structure and summary</span></a>
-<a class="sourceLine" id="cb30-5" data-line-number="5"><span class="kw">str</span>(newyr)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co">#Creating a datafram that only includes data from year 2000</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>newyr &lt;-<span class="st"> </span>africadata[africadata<span class="op">$</span>year<span class="op">==</span><span class="st">&quot;2000&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;country&quot;</span>, <span class="st">&quot;year&quot;</span>, <span class="st">&quot;infant_mortality&quot;</span>, <span class="st">&quot;life_expectancy&quot;</span>, <span class="st">&quot;fertility&quot;</span>, <span class="st">&quot;population&quot;</span>, <span class="st">&quot;gdp&quot;</span>, <span class="st">&quot;continent&quot;</span>, <span class="st">&quot;region&quot;</span>)]</span>
+<span id="cb30-3"><a href="#cb30-3"></a></span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="co">#Check the structure and summary</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a><span class="kw">str</span>(newyr)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    51 obs. of  9 variables:
 ##  $ country         : Factor w/ 185 levels &quot;Albania&quot;,&quot;Algeria&quot;,..: 2 3 18 22 26 27 29 31 32 33 ...
 ##  $ year            : int  2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 ...
@@ -540,7 +545,7 @@ $(document).ready(function () {
 ##  $ gdp             : num  5.48e+10 9.13e+09 2.25e+09 5.63e+09 2.61e+09 ...
 ##  $ continent       : Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ region          : Factor w/ 22 levels &quot;Australia and New Zealand&quot;,..: 11 10 20 17 20 5 10 20 10 10 ...</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">summary</span>(newyr)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="kw">summary</span>(newyr)</span></code></pre></div>
 <pre><code>##          country        year      infant_mortality life_expectancy
 ##  Algeria     : 1   Min.   :2000   Min.   : 12.30   Min.   :37.60  
 ##  Angola      : 1   1st Qu.:2000   1st Qu.: 60.80   1st Qu.:51.75  
@@ -566,27 +571,113 @@ $(document).ready(function () {
 ##  Australia and New Zealand: 0  
 ##  (Other)                  : 0</code></pre>
 <p>#Plotting with new subset</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="co">#Plot new dataframe, same variable as before</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="co">#Life expectancy vs. Infant Mortality 2000 plot</span></a>
-<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">plot</span>(infant_mortality <span class="op">~</span><span class="st"> </span>life_expectancy, <span class="dt">data=</span>newyr)</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co">#Plot new dataframe, same variable as before</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a><span class="co">#Life expectancy vs. Infant Mortality 2000 plot</span></span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="kw">plot</span>(infant_mortality <span class="op">~</span><span class="st"> </span>life_expectancy, <span class="dt">data=</span>newyr)</span></code></pre></div>
 <p><img src="rcoding_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="co">#Life expectancy vs. Population 2000 plot</span></a>
-<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="kw">plot</span>(life_expectancy <span class="op">~</span><span class="st"> </span>population, <span class="dt">data=</span>newyr, <span class="dt">log =</span> <span class="st">&quot;x&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co">#Life expectancy vs. Population 2000 plot</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a><span class="kw">plot</span>(life_expectancy <span class="op">~</span><span class="st"> </span>population, <span class="dt">data=</span>newyr, <span class="dt">log =</span> <span class="st">&quot;x&quot;</span>)</span></code></pre></div>
 <p><img src="rcoding_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co">#no relationship</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="co">#Lets create fitted lines for the life expectancy outcome</span></a>
-<a class="sourceLine" id="cb36-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb36-5" data-line-number="5"><span class="co">#Life expectancy vs. Infant Mortality 2000</span></a>
-<a class="sourceLine" id="cb36-6" data-line-number="6">fit1&lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> life_expectancy <span class="op">~</span><span class="st"> </span>infant_mortality, <span class="dt">data =</span> newyr)</a>
-<a class="sourceLine" id="cb36-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb36-8" data-line-number="8"><span class="co">#Life expectancy vs. Population 2000</span></a>
-<a class="sourceLine" id="cb36-9" data-line-number="9">fit2&lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> life_expectancy <span class="op">~</span><span class="st"> </span>population, <span class="dt">data =</span> newyr)</a>
-<a class="sourceLine" id="cb36-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb36-11" data-line-number="11"><span class="co">#summary(fit1)</span></a>
-<a class="sourceLine" id="cb36-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb36-13" data-line-number="13"><span class="co">#summary(fit2)</span></a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">#no relationship</span></span>
+<span id="cb36-2"><a href="#cb36-2"></a></span>
+<span id="cb36-3"><a href="#cb36-3"></a><span class="co">#Lets create fitted lines for the life expectancy outcome</span></span>
+<span id="cb36-4"><a href="#cb36-4"></a></span>
+<span id="cb36-5"><a href="#cb36-5"></a><span class="co">#Life expectancy vs. Infant Mortality 2000</span></span>
+<span id="cb36-6"><a href="#cb36-6"></a>fit1&lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> life_expectancy <span class="op">~</span><span class="st"> </span>infant_mortality, <span class="dt">data =</span> newyr)</span>
+<span id="cb36-7"><a href="#cb36-7"></a></span>
+<span id="cb36-8"><a href="#cb36-8"></a><span class="co">#Life expectancy vs. Population 2000</span></span>
+<span id="cb36-9"><a href="#cb36-9"></a>fit2&lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> life_expectancy <span class="op">~</span><span class="st"> </span>population, <span class="dt">data =</span> newyr)</span>
+<span id="cb36-10"><a href="#cb36-10"></a></span>
+<span id="cb36-11"><a href="#cb36-11"></a><span class="co">#summary(fit1)</span></span>
+<span id="cb36-12"><a href="#cb36-12"></a></span>
+<span id="cb36-13"><a href="#cb36-13"></a><span class="co">#summary(fit2)</span></span></code></pre></div>
 <p>#After looking at P-values for both, it appears that the correlation between Infant Mortality and Life Expectancy has a P-val &lt;0.05 and is a better predictor than Population, which has a P-val &gt;0.05.</p>
+<p>#We’ve established that infant mortality is a good predictor of life expectancy. Other variables in this dataset include fertility and GDP - how do these variables relate to life expectancy? Could they be better predictors of life expectancy than infant mortality is? Let’s explore this.</p>
+<p>#Subset data</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co">#create subset of africadata containing fertility and life expectancy</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a>fle &lt;-<span class="st"> </span>africadata <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="st">&quot;fertility&quot;</span>, <span class="st">&quot;life_expectancy&quot;</span>)</span>
+<span id="cb37-3"><a href="#cb37-3"></a></span>
+<span id="cb37-4"><a href="#cb37-4"></a><span class="co">#create subset of africadata containing GDP and life expectancy</span></span>
+<span id="cb37-5"><a href="#cb37-5"></a>gdple &lt;-<span class="st"> </span>africadata <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="st">&quot;gdp&quot;</span>, <span class="st">&quot;life_expectancy&quot;</span>)</span></code></pre></div>
+<p>#Create plots</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">#create plot of fertility vs. life expectancy</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a><span class="kw">ggplot</span>(fle, <span class="kw">aes</span>(fertility, life_expectancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 51 rows containing missing values (geom_point).</code></pre>
+<p><img src="rcoding_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co">#Here, we have a weak negative correlation</span></span>
+<span id="cb40-2"><a href="#cb40-2"></a></span>
+<span id="cb40-3"><a href="#cb40-3"></a><span class="co">#create plot of GDP vs. life expectancy</span></span>
+<span id="cb40-4"><a href="#cb40-4"></a><span class="kw">ggplot</span>(gdple, <span class="kw">aes</span>(gdp, life_expectancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 637 rows containing missing values (geom_point).</code></pre>
+<p><img src="rcoding_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="co">#Here, we see a possible weak positive correlation, with a large of cluster of values on the lower end of the GDP range</span></span></code></pre></div>
+<p>#Fit a model</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="co">#Let&#39;s look at how fertility and GDP perform as predictors of life expectancy using a linear model</span></span>
+<span id="cb43-2"><a href="#cb43-2"></a></span>
+<span id="cb43-3"><a href="#cb43-3"></a><span class="co">#Life expectancy vs fertility</span></span>
+<span id="cb43-4"><a href="#cb43-4"></a>fit3 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> life_expectancy <span class="op">~</span><span class="st"> </span>fertility, <span class="dt">data =</span> fle)</span>
+<span id="cb43-5"><a href="#cb43-5"></a></span>
+<span id="cb43-6"><a href="#cb43-6"></a><span class="co">#Life expectancy vs GDP</span></span>
+<span id="cb43-7"><a href="#cb43-7"></a>fit4 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> life_expectancy <span class="op">~</span><span class="st"> </span>gdp, <span class="dt">data =</span> gdple)</span>
+<span id="cb43-8"><a href="#cb43-8"></a></span>
+<span id="cb43-9"><a href="#cb43-9"></a><span class="co">#view summaries of fit3 and fit4</span></span>
+<span id="cb43-10"><a href="#cb43-10"></a><span class="kw">summary</span>(fit3)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = life_expectancy ~ fertility, data = fle)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -38.729  -3.568   1.043   4.642  21.709 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 77.70385    0.55373  140.33   &lt;2e-16 ***
+## fertility   -4.01475    0.09202  -43.63   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.909 on 2854 degrees of freedom
+##   (51 observations deleted due to missingness)
+## Multiple R-squared:  0.4001, Adjusted R-squared:  0.3999 
+## F-statistic:  1903 on 1 and 2854 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="kw">summary</span>(fit4)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = life_expectancy ~ gdp, data = gdple)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -40.136  -5.266  -0.432   5.043  20.209 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 5.325e+01  1.832e-01  290.62   &lt;2e-16 ***
+## gdp         1.150e-10  7.730e-12   14.88   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 8.022 on 2268 degrees of freedom
+##   (637 observations deleted due to missingness)
+## Multiple R-squared:  0.08893,    Adjusted R-squared:  0.08852 
+## F-statistic: 221.4 on 1 and 2268 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>The summaries show that both fit3 and fit4 have a p-value of &lt; 0.05, indicating that fertility and GDP may be good predictors of life expectancy. Let’s display the <code>lm()</code> output as a table using the <code>broom</code> package.</p>
+<p>#Use <code>broom</code> to view fit results</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="co">#View fertility vs life expectancy (fit3) results</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a><span class="kw">tidy</span>(fit3)</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    77.7     0.554      140.  0        
+## 2 fertility      -4.01    0.0920     -43.6 5.07e-319</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="co">#View GDP vs life expectancy (fit4) results</span></span>
+<span id="cb49-2"><a href="#cb49-2"></a><span class="kw">tidy</span>(fit4)</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 5
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept) 5.32e+ 1  1.83e- 1     291.  0       
+## 2 gdp         1.15e-10  7.73e-12      14.9 7.61e-48</code></pre>
+<p>After exploring the relationship between fertility and life expectancy and GDP and life expectancy, it appears that both fitted models have p-values of &lt;0.05, indicating that fertility and GDP may also have an informative/predictive relationship with life expectancy.</p>
 
 
 

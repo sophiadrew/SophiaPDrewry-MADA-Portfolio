@@ -2,10 +2,13 @@ name: "My Data Analysis Portfolio"
 output_dir: 'docs'
 output:
   html_document:
-    theme: cosmo
-    highlight: zenburn
+    theme: readable
+    highlight: tango
     toc: false
 navbar:
+  logo:
+    image: ./files/logo.png
+    href: https://sophiadrew.github.io/SophiaPDrewry-MADA-Portfolio/index.html
   type: inverse
   title: "My Data Analysis Portfolio"
   left:
@@ -17,8 +20,13 @@ navbar:
           href: ./rcoding.html
         - text: "Visualization"
           href: ./visualization.html
-        - text: "Tidy Tuesday"
+        - text: "Tidy Tuesday #1"
           href: ./tidytuesday.html
+        - text: "Tidy Tuesday #2"
+          href: ./TidyTuesday2.html
+        - text: "Machine Learning Modeling"
+          href: ./files/analysis3 copy.html  
+          
   right:
     - icon: fa-github fa-lg
-      href: URL-TO-THIS-REPOSITORY-HERE        
+      href: https://github.com/sophiadrew/SophiaPDrewry-MADA-Portfolio       

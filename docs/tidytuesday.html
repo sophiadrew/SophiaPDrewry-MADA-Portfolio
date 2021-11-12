@@ -342,14 +342,20 @@ $(document).ready(function () {
       <a href="./visualization.html">Visualization</a>
     </li>
     <li>
-      <a href="./tidytuesday.html">Tidy Tuesday</a>
+      <a href="./tidytuesday.html">Tidy Tuesday #1</a>
+    </li>
+    <li>
+      <a href="./TidyTuesday2.html">Tidy Tuesday #2</a>
+    </li>
+    <li>
+      <a href="./files/analysis3 copy.html">Machine Learning Modeling</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="URL-TO-THIS-REPOSITORY-HERE">
+  <a href="https://github.com/sophiadrew/SophiaPDrewry-MADA-Portfolio">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -371,38 +377,54 @@ $(document).ready(function () {
 <div id="packages-needed-for-this-excersise" class="section level2">
 <h2>Packages needed for this excersise</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytuesdayR) <span class="co">#to load data</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nberwp) <span class="co">#to clean and arrange data</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
-<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
-## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-## ✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes) <span class="co">#for cool graphs</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd) <span class="co"># to create mosaic plots</span></span></code></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nberwp) <span class="co">#to clean and arrange data</span></span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;nberwp&#39;</code></pre>
+<pre><code>## The following objects are masked _by_ &#39;.GlobalEnv&#39;:
+## 
+##     authors, paper_authors, paper_programs, papers, programs</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes) <span class="co">#for cool graphs</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd) <span class="co"># to create mosaic plots</span></span></code></pre></div>
 <pre><code>## Loading required package: grid</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(remotes) <span class="co"># to download package from github</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># To download gender package; do the following:</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;lmullen/gender&quot;</span>)</span></code></pre></div>
-<pre><code>## Skipping install of &#39;gender&#39; from a github remote, the SHA1 (92648829) has not changed since last install.
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(remotes) <span class="co"># to download package from github</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(devtools)</span></code></pre></div>
+<pre><code>## Loading required package: usethis</code></pre>
+<pre><code>## 
+## Attaching package: &#39;usethis&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:remotes&#39;:
+## 
+##     git_credentials</code></pre>
+<pre><code>## 
+## Attaching package: &#39;devtools&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:remotes&#39;:
+## 
+##     dev_package_deps, install_bioc, install_bitbucket, install_cran,
+##     install_deps, install_dev, install_git, install_github,
+##     install_gitlab, install_local, install_svn, install_url,
+##     install_version, update_packages</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidytuesdayR&#39;:
+## 
+##     github_pat</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To download gender package; do the following:</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;lmullen/gender&quot;</span>)</span></code></pre></div>
+<pre><code>## Skipping install of &#39;gender&#39; from a github remote, the SHA1 (38a27932) has not changed since last install.
 ##   Use `force = TRUE` to force installation</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;lmullen/genderdata&quot;</span>)</span></code></pre></div>
-<pre><code>## Skipping install of &#39;genderdata&#39; from a github remote, the SHA1 (f598c840) has not changed since last install.
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;lmullen/genderdata&quot;</span>)</span></code></pre></div>
+<pre><code>## Skipping install of &#39;genderdata&#39; from a github remote, the SHA1 (64e6a213) has not changed since last install.
 ##   Use `force = TRUE` to force installation</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gender)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(genderdata)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#require(devtools)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#install_version(&quot;gender&quot;, version = &quot;0.5.4&quot;, repos = &quot;https://rdocumentation.org/packages/gender/versions/0.5.4&quot;)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gender)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(genderdata)</span></code></pre></div>
 </div>
 <div id="downloading-data" class="section level1">
 <h1>Downloading Data</h1>
 <p>Follow the instructions on the tidytuesday github. I ended up manually downloading from the pathway because the tidyverse data was not coming up for week 40.</p>
 <p>This data comes from the National Bureau of Economic Research (NBER). In the original data set there are a couple individual data sets, that look at papers published, title, name, and date published. For more information check out the data dictionary included in the github repository.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The following was taken from the Tidy Tuesday github</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>papers <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/papers.csv&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The following was taken from the Tidy Tuesday github</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>papers <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/papers.csv&#39;</span>)</span></code></pre></div>
 <pre><code>## Rows: 29434 Columns: 4</code></pre>
 <pre><code>## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -411,7 +433,7 @@ $(document).ready(function () {
 <pre><code>## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/authors.csv&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/authors.csv&#39;</span>)</span></code></pre></div>
 <pre><code>## Rows: 15437 Columns: 4</code></pre>
 <pre><code>## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -419,7 +441,7 @@ $(document).ready(function () {
 <pre><code>## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>programs <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/programs.csv&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>programs <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/programs.csv&#39;</span>)</span></code></pre></div>
 <pre><code>## Rows: 21 Columns: 3</code></pre>
 <pre><code>## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -427,7 +449,7 @@ $(document).ready(function () {
 <pre><code>## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>paper_authors <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_authors.csv&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>paper_authors <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_authors.csv&#39;</span>)</span></code></pre></div>
 <pre><code>## Rows: 67090 Columns: 2</code></pre>
 <pre><code>## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -435,7 +457,7 @@ $(document).ready(function () {
 <pre><code>## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>paper_programs <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_programs.csv&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>paper_programs <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_programs.csv&#39;</span>)</span></code></pre></div>
 <pre><code>## Rows: 53996 Columns: 2</code></pre>
 <pre><code>## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -447,24 +469,24 @@ $(document).ready(function () {
 <div id="cleaning" class="section level1">
 <h1>Cleaning</h1>
 <p>The github repository includes instruction on cleaning data. See below.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>joined_df <span class="ot">&lt;-</span> <span class="fu">left_join</span>(papers, paper_authors) <span class="sc">%&gt;%</span> </span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(authors) <span class="sc">%&gt;%</span> </span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(paper_programs) <span class="sc">%&gt;%</span> </span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(programs)<span class="sc">%&gt;%</span> </span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">catalogue_group =</span> <span class="fu">str_sub</span>(paper, <span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">catalogue_group =</span> <span class="fu">case_when</span>(</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>      catalogue_group <span class="sc">==</span> <span class="st">&quot;h&quot;</span> <span class="sc">~</span> <span class="st">&quot;Historical&quot;</span>,</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>      catalogue_group <span class="sc">==</span> <span class="st">&quot;t&quot;</span> <span class="sc">~</span> <span class="st">&quot;Technical&quot;</span>,</span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>      catalogue_group <span class="sc">==</span> <span class="st">&quot;w&quot;</span> <span class="sc">~</span> <span class="st">&quot;General&quot;</span></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">.after =</span> paper</span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>joined_df <span class="ot">&lt;-</span> <span class="fu">left_join</span>(papers, paper_authors) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(authors) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(paper_programs) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(programs)<span class="sc">%&gt;%</span> </span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">catalogue_group =</span> <span class="fu">str_sub</span>(paper, <span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">catalogue_group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>      catalogue_group <span class="sc">==</span> <span class="st">&quot;h&quot;</span> <span class="sc">~</span> <span class="st">&quot;Historical&quot;</span>,</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>      catalogue_group <span class="sc">==</span> <span class="st">&quot;t&quot;</span> <span class="sc">~</span> <span class="st">&quot;Technical&quot;</span>,</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>      catalogue_group <span class="sc">==</span> <span class="st">&quot;w&quot;</span> <span class="sc">~</span> <span class="st">&quot;General&quot;</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">.after =</span> paper</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div>
 <pre><code>## Joining, by = &quot;paper&quot;</code></pre>
 <pre><code>## Joining, by = &quot;author&quot;</code></pre>
 <pre><code>## Joining, by = &quot;paper&quot;</code></pre>
 <pre><code>## Joining, by = &quot;program&quot;</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>joined_df</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>joined_df</span></code></pre></div>
 <pre><code>## # A tibble: 130,081 × 12
 ##    paper catalogue_group  year month title     author name  user_nber user_repec
 ##    &lt;chr&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;     
@@ -480,9 +502,9 @@ $(document).ready(function () {
 ## 10 w0009 General          1973     9 From Age… w0004… Lee … &lt;NA&gt;      pli669    
 ## # … with 130,071 more rows, and 3 more variables: program &lt;chr&gt;,
 ## #   program_desc &lt;chr&gt;, program_category &lt;chr&gt;</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">#In this code we are basically joining all the papers together and renaming the catalogue group</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(joined_df)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co">#In this code we are basically joining all the papers together and renaming the catalogue group</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(joined_df)</span></code></pre></div>
 <pre><code>##     paper           catalogue_group         year          month       
 ##  Length:130081      Length:130081      Min.   :1973   Min.   : 1.000  
 ##  Class :character   Class :character   1st Qu.:2005   1st Qu.: 4.000  
@@ -504,7 +526,7 @@ $(document).ready(function () {
 ##                                                                             
 ##                                                                             
 ## </code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(joined_df)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(joined_df)</span></code></pre></div>
 <pre><code>## tibble [130,081 × 12] (S3: tbl_df/tbl/data.frame)
 ##  $ paper           : chr [1:130081] &quot;w0001&quot; &quot;w0002&quot; &quot;w0003&quot; &quot;w0004&quot; ...
 ##  $ catalogue_group : chr [1:130081] &quot;General&quot; &quot;General&quot; &quot;General&quot; &quot;General&quot; ...
@@ -522,16 +544,16 @@ $(document).ready(function () {
 <div id="exploratory-data-analysis" class="section level1">
 <h1>Exploratory data analysis</h1>
 <p>First I want to get a quick visualization of the years that papers were published</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(joined_df, <span class="fu">aes</span>(<span class="at">x=</span>year)) <span class="sc">+</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title=</span> <span class="st">&quot;Number of NBER Published Papers by Year&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Number of Papers Published&quot;</span>) <span class="sc">+</span>  </span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_wsj</span>()  <span class="co">#Just discovered this theme and I will never go back!</span></span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(joined_df, <span class="fu">aes</span>(<span class="at">x=</span>year)) <span class="sc">+</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title=</span> <span class="st">&quot;Number of NBER Published Papers by Year&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Number of Papers Published&quot;</span>) <span class="sc">+</span>  </span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_wsj</span>()  <span class="co">#Just discovered this theme and I will never go back!</span></span></code></pre></div>
 <p><img src="tidytuesday_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Looks like there were quite a few papers published in 2020. Lets take a close look at the data from 2020</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>newyr <span class="ot">&lt;-</span> joined_df[ <span class="fu">which</span>(joined_df<span class="sc">$</span>year<span class="sc">==</span><span class="st">&quot;2020&quot;</span>), ]</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>newyr <span class="ot">&lt;-</span> joined_df[ <span class="fu">which</span>(joined_df<span class="sc">$</span>year<span class="sc">==</span><span class="st">&quot;2020&quot;</span>), ]</span></code></pre></div>
 <p>I dont nknow too much about the categories, so lets look at them individually</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(newyr<span class="sc">$</span>program_desc)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(newyr<span class="sc">$</span>program_desc)</span></code></pre></div>
 <pre><code>## 
 ##                                  Asset Pricing 
 ##                                            685 
@@ -575,18 +597,18 @@ $(document).ready(function () {
 ##                                           1437 
 ##                       Technical Working Papers 
 ##                                            102</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(newyr<span class="sc">$</span>program)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(newyr<span class="sc">$</span>program)</span></code></pre></div>
 <pre><code>## 
 ##   AG   AP   CF   CH  DAE  DEV   ED  EEE  EFG   HC   HE  IFM   IO  ITI   LE   LS 
 ##  360  685  768  436  280  627  443  306 1286  604 1022  560  459  403  314 1322 
 ##   ME   PE  POL   PR  TWP 
 ##  669 1437  516  618  102</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(newyr<span class="sc">$</span>program_category)</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(newyr<span class="sc">$</span>program_category)</span></code></pre></div>
 <pre><code>## 
 ##             Finance Macro/International               Micro 
 ##                1453                2918                8744</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The most interesting seem to be program_category &amp; program_desc</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Since there is not to much flexibility we can do with categorical data</span></span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The most interesting seem to be program_category &amp; program_desc</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Since there is not to much flexibility we can do with categorical data</span></span></code></pre></div>
 <div id="eda-infer-gender" class="section level2">
 <h2>EDA: Infer gender</h2>
 <p>Since this has a good bit of categorical data, I am going to use the “gender” package to determine the gender of the authors For some background on the package, it was created by <span class="citation">@lmullen</span> and uses historical data to infer sex assigned at birth based on first names. Since it was taken down from ropensci.org, you need to download it directly from <span class="citation">@lmullens</span> github.</p>
@@ -596,53 +618,24 @@ datasets. By using these datasets instead of lists of male and female names,
 this package is able to more accurately infer the gender of a name, and it
 is able to report the probability that a name was male or female. GUIDELINES:
 This method must be used cautiously and responsibly.&quot;</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First we need to split names into first and last</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>namesplit <span class="ot">&lt;-</span> <span class="fu">extract</span>(joined_df, name, <span class="fu">c</span>(<span class="st">&quot;FirstName&quot;</span>, <span class="st">&quot;LastName&quot;</span>), <span class="st">&quot;([^ ]+) (.*)&quot;</span>)   </span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Now lets run the code to predict gender</span></span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">gender_df</span>(namesplit, <span class="at">name_col =</span> <span class="st">&quot;FirstName&quot;</span>, <span class="at">year_col =</span> <span class="st">&quot;year&quot;</span>, <span class="at">method =</span> <span class="st">&quot;ssa&quot;</span>) <span class="co"># ssa is data from social security administration from the genderdata package</span></span></code></pre></div>
-<pre><code>## Warning: The `.dots` argument of `group_by()` is deprecated as of dplyr 1.0.0.</code></pre>
-<pre><code>## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
-## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
-
-## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
-## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
-
-## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
-## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
-
-## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
-## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
-
-## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
-## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
-
-## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
-## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
-
-## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
-## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
-
-## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
-## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.
-
-## Warning in gender(.[[name_col]], years = c(.[[year_col[1]]][1], .[[year_col[2]]]
-## [1]), : The year range provided has been trimmed to fit within 1880 to 2012.</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(results) <span class="co">#looks good!</span></span></code></pre></div>
+<p>} # First we need to split names into first and last</p>
+<p>namesplit &lt;- extract(joined_df, name, c(“FirstName”, “LastName”), “([^ ]+) (.*)“)</p>
 </div>
+</div>
+<div id="now-lets-run-the-code-to-predict-gender" class="section level1">
+<h1>Now lets run the code to predict gender</h1>
+<p>results &lt;- namesplit %&gt;% distinct(FirstName, year) %&gt;% rowwise() %&gt;% do(results = gender(namesplit<span class="math inline">\(FirstName, years = namesplit\)</span>year, method = “ssa”)) %&gt;% do(bind_rows(namesplit$results))</p>
+</div>
+<div id="ssa-is-data-from-social-security-administration-from-the-genderdata-package" class="section level1">
+<h1>ssa is data from social security administration from the genderdata package</h1>
+<p>view(results) #looks good!</p>
 </div>
 <div id="graphing" class="section level1">
 <h1>Graphing</h1>
 <p>Now I want to see the number of papers published by females vs. males over time</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(results, <span class="fu">aes</span>(<span class="at">x=</span>year_max, <span class="at">fill=</span>gender)) <span class="sc">+</span> <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">labs</span>(<span class="at">title=</span> <span class="st">&quot;Published NBER Papers by Gender from 1973-2021&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylab</span>(<span class="st">&quot;Number of Papers Published&quot;</span>) <span class="sc">+</span>           </span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme_wsj</span>() <span class="sc">+</span></span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set1&quot;</span>)</span></code></pre></div>
-<p><img src="tidytuesday_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>ggplot(results, aes(x=year_max, fill=gender)) + geom_bar() + labs(title= “Published NBER Papers by Gender from 1973-2021”) + xlab(“Year”) + ylab(“Number of Papers Published”) +<br />
+theme_wsj() + scale_fill_brewer(palette = “Set1”)</p>
+<p>`</p>
 </div>
 
 

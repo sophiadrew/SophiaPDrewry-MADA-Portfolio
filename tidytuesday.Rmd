@@ -16,10 +16,13 @@ library(ggthemes) #for cool graphs
 library(vcd) # to create mosaic plots
 library(remotes) # to download package from github
 library(tidyr)
+library(devtools)
 
 # To download gender package; do the following:
 remotes::install_github("lmullen/gender")
 remotes::install_github("lmullen/genderdata")
+#require(devtools)
+#install_version("gender", version = "0.5.4", repos = "https://rdocumentation.org/packages/gender/versions/0.5.4")
 library(gender)
 library(genderdata)
 ```
@@ -100,21 +103,26 @@ When loading this package, make a note the description warning as it is importan
     is able to report the probability that a name was male or female. GUIDELINES:
     This method must be used cautiously and responsibly."
     
-```{R} 
+} 
 # First we need to split names into first and last
    
 namesplit <- extract(joined_df, name, c("FirstName", "LastName"), "([^ ]+) (.*)")   
 
 # Now lets run the code to predict gender
+results <- namesplit %>% 
+  distinct(FirstName, year) %>% 
+  rowwise() %>% 
+  do(results = gender(namesplit$FirstName, years = namesplit$year, method = "ssa")) %>% 
+  do(bind_rows(namesplit$results))
 
-results <- gender_df(namesplit, name_col = "FirstName", year_col = "year", method = "ssa") # ssa is data from social security administration from the genderdata package
+# ssa is data from social security administration from the genderdata package
 
 view(results) #looks good!
-```
+
 # Graphing
 Now I want to see the number of papers published by females vs. males over time
 
-```{R}
+
 ggplot(results, aes(x=year_max, fill=gender)) + geom_bar() +
    labs(title= "Published NBER Papers by Gender from 1973-2021") + 
    xlab("Year") + 
@@ -122,7 +130,7 @@ ggplot(results, aes(x=year_max, fill=gender)) + geom_bar() +
    theme_wsj() +
    scale_fill_brewer(palette = "Set1")
 
-```
+`
 
 
 

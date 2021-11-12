@@ -1,16 +1,26 @@
 ---
-title: "My website and data analysis portfolio"
+title: "Sophia Drewry Data Analysis Portfolio"
 output: 
   html_document:
     toc: FALSE
+    theme: readable
+    highlight: tango
 ---
 
-# Hello
-
-### And hello again
-
-Welcome to **my website** and _data analysis portfolio._ 
 
 
-* Please use the `Menu Bar` above to look around.
-* Have fun!
+<script>
+   $(document).ready(function() {
+     $head = $('#header');
+     $head.prepend('<img src=\"files/logo.png\" style=\"float: right; border: none; width: 150px;\"/>')
+   });
+</script>
+$$\\[.25in]$$
+
+## Hello and welcome to my data analysis portfolio. 
+My name is Sophia Drewry and that website houses all of my coding work I have done as a student at the University of Georgia. 
+Click here to see my most recent project. 
+
+Click here to check out my other website
+<center>
+</center>

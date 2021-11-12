@@ -1,0 +1,385 @@
+---
+title: "Fitting TREE, LASSO & RANDOM FORREST models "
+author: "Sophia Drewry"
+date: "11/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+This script loads the cleaned and processed data to perform some formal statistical fitting
+This analysis will focus on the continuous outcome "BodyTemp" with machine learning models
+```{r}
+# load needed packages. make sure they are installed or else...
+library(dplyr) #for data processing
+library(here) #to set paths
+library(tidymodels) #to fit models
+library(rpart)
+library(rpart.plot)
+library(glmnet)
+library(ranger)
+library(future)
+library(parallel)
+library(doParallel)
+```
+##Load data
+```{r}
+# note the use of the here() package and not absolute paths
+dataSPOT <- here::here("files","processeddta.rds")
+# load data. 
+processeddta <-readRDS(dataSPOT)
+```
+## Data splitting
+Here we are going to split the data randomly into training and testing subsets
+- Training data will be used to fit the model. 
+- Testing set will be used to evaluate the model.
+```{r}
+# Setting a seed for random number generation so if this analysis is reproduced, the same random set will be generated
+set.seed(123)
+# Subsetting 70% of data into training and 20% of data into testing
+# We using Body Temp to stratify
+data_split <- initial_split(processeddta, prop = .7, strata = "BodyTemp")
+# Creating training data
+train_data <- training(data_split)
+# Creating testing data
+test_data  <- testing(data_split)
+```
+## 5-fold cross-validation, 5x repeated
+```{r}
+# Creating a resample object for our trainng data
+set.seed(123)
+folds <- vfold_cv(train_data, v = 5, repeats = 5, strata = "BodyTemp")
+folds
+```
+///////////////////////////////////////////////////////////////////////////////
+## Setting workflows & training models: Model 1 
+Setting up lr.mod that will be used for the rest of the excersise
+```{r}
+lr.mod <- linear_reg() %>% 
+  set_engine("lm") %>%
+  set_mode("regression")
+```
+
+# Creating recipe + dummy variable 
+```{r}
+# Creating Recipe TRAIN DTA for all categorical Dummy Variables
+#Setting up the linear model
+D.BodyTemp.rec <- recipe(BodyTemp ~ ., data = train_data)  %>% 
+  step_dummy(all_nominal())
+# Create workflow
+D.BT.wflow <- workflow() %>% 
+  add_model(lr.mod) %>% 
+  add_recipe(D.BodyTemp.rec)
+# Fit model to training data
+D.BT.fit <- 
+  D.BT.wflow %>% 
+  fit(data = train_data)
+# evaluate
+D.BT.fit %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+```
+
+# Creating a Null Model 
+This is to use as a comparison for our other future models
+```{r}
+# Create null formula
+BodyTemp.rec <- recipe(BodyTemp ~ 1., data = train_data)  
+# set workflow
+N.BT.wflow <-
+  workflow() %>% 
+  add_model(lr.mod) %>% 
+  add_recipe(BodyTemp.rec)
+```
+## Applying to train and test data
+```{r}
+#########################  Null Training    #########################
+# Creating null recipe & model with TRAIN data
+# fitting
+N.BT.train.fit <- 
+  N.BT.wflow %>% 
+  fit(data = train_data)
+# usual
+N.BT.train.fit %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+# RMSE
+predict(N.BT.train.fit, train_data)
+N.BT.train.aug <- augment(N.BT.train.fit, train_data)
+N.BT.train.aug %>% select(BodyTemp, .pred) 
+N.BT.train.aug %>% rmse(truth = BodyTemp, .pred)
+# RMSE = 1.209327	
+```
+
+```{r}
+################################ Null  Testing   ################################
+# fitting
+# fitting
+N.BT.test.fit <- 
+  N.BT.wflow %>% 
+  fit(data = test_data)
+# usual
+N.BT.test.fit %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+predict(N.BT.train.fit, test_data)
+N.BT.test.aug <- augment(N.BT.train.fit, test_data) # I don't think i need this
+N.BT.test.aug %>% select(BodyTemp, .pred) 
+N.BT.test.aug %>% #taking the root-mean square error of the model
+  rmse(truth = BodyTemp, .pred)
+# RMSE = 1.163343	
+
+```
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+# Creating Models
+################################   Tree Model  ################################
+sources:
+https://www.tidymodels.org/start/resampling/
+```{r}
+## Tuning hyper-parameters
+tune_spec <- 
+  decision_tree(cost_complexity = tune(), 
+  tree_depth = tune()) %>% 
+  set_engine("rpart") %>% 
+  set_mode("regression")
+tune_spec # We will come back to these parameters
+# setting workflow
+treeBT <- workflow() %>%
+  add_model(tune_spec) %>%
+  add_recipe(D.BodyTemp.rec)
+
+```
+## Tuning with a grid
+```{r}
+# Create a grid
+tree_grid <- grid_regular(cost_complexity(),
+                          tree_depth(),
+                          levels = 5)
+# tuning
+tree_res <- treeBT %>% 
+  tune_grid(resamples = folds, grid = tree_grid)
+tree_res %>% collect_metrics()
+
+```
+## Fitting
+```{r}
+tree_res %>%
+  collect_metrics()
+# Looks like we have 2 deeper "trees" that perform similar in cost complexity as well, but not the best
+# Lets check out the top 5
+tree_res %>% show_best("rmse", n = 1)
+# Now to pull out the best set of hyperparameter values for our decision tree model
+best_tree <- tree_res %>% select_best("rmse")
+# finalize workflow
+final_wf <- treeBT %>% finalize_workflow(best_tree)
+# final fit
+final_fit <- final_wf %>% fit(data = train_data) 
+final_fit
+final_pred <- predict(final_fit, train_data)
+
+# RMSE = 1.193128	
+```
+RMSE = 1.193128	compared to Null model RMSE = 1.209 is not much of a difference
+
+## Visualize
+```{r}
+rpart.plot(extract_fit_parsnip(final_fit)$fit)
+# simple one-liner code used from Dr. Handel
+
+# lets compare the residuals
+#calculating residuals, code barrowed from my classmate Zane
+tree_resid <- final_fit %>%
+  augment(train_data) %>% 
+  select(.pred, BodyTemp) %>%
+  mutate(.resid = BodyTemp - .pred) #manually calculate residuals
+
+# prediction vs. truth
+ggplot(tree_resid, aes(x = BodyTemp, y = .pred)) + geom_point()
+
+# plotting residuals v. prediction
+ggplot(data=tree_resid, aes(x=.pred , y=.resid)) + 
+  geom_point()
+
+
+```
+################################   LASSO  ################################
+sources:
+https://www.tidymodels.org/start/case-study/
+https://stackoverflow.com/questions/66639452/tuning-a-lasso-model-and-predicting-using-tidymodels
+
+## Building model
+```{r}
+# create model
+lasso.mod <- linear_reg() %>%
+  set_mode("regression") %>%           
+  set_engine("glmnet") %>%
+  set_args(penalty = tune(), mixture = 1) #mixture = 1 means we use the LASSO model
+# set workflow
+lasso.wflow <- workflow() %>%
+    add_model(lasso.mod) %>%
+    add_recipe(D.BodyTemp.rec)
+```
+## Train and tune LASSO
+### Setting cores
+
+Taken from Dr. Handel, prevents my my session from aborting
+```{r}
+cores <- parallel::detectCores()
+cores
+ncores = 2
+cl <- makePSOCKcluster(ncores)
+registerDoParallel(cl)
+
+# creating grid and tuning
+lr_reg_grid <- tibble(penalty = 10^seq(-3, 0, length.out = 30)) 
+
+# tuning on training data
+lasso.res <- lasso.wflow %>% 
+  tune::tune_grid(resamples = folds,
+            grid = lr_reg_grid,
+            control = control_grid(verbose = TRUE, save_pred = TRUE),
+            metrics = metric_set(rmse))
+# turn off parallel cluster
+lasso.res %>% autoplot()
+stopCluster(cl)
+```
+
+## Choosing the best performing model
+```{r}
+lasso.top.models <- lasso.res %>% 
+  select_best("rmse") 
+# finalize workflow with the best model
+best.lasso.wflow <- lasso.wflow %>% 
+  finalize_workflow(lasso.top.models)
+# fitting best performing model
+best.lasso.fit <- best.lasso.wflow %>% 
+  fit(data = train_data)
+lasso.pred <- predict(best.lasso.fit, train_data)
+lasso.res %>% show_best(n = 1)
+# RMSE = 1.153742	
+```
+## Plotting performance
+
+```{r}
+# This code is borrowed from Dr. Handel
+# Variables and tuning perameters
+x <- best.lasso.fit$fit$fit$fit
+plot(x, "lambda")
+```
+
+################################   Random Forrest  ################################
+sources:
+https://www.tidymodels.org/start/case-study/
+https://stackoverflow.com/questions/65370000/tidymodels-a-plot-showing-performance-model-metrics-rmse-rsq-for-a-random-f
+```{r}
+# Create model
+rf.mod <- rand_forest() %>% 
+  set_args(mtry = tune(), min_n = tune(), trees = tune()) %>% 
+  set_engine("ranger", num.threads = 4, importance = "permutation") %>% 
+  set_mode("regression")
+```
+## Create recipe and workflow
+```{r}
+rf.wflow <- 
+  workflow() %>% 
+  add_model(rf.mod) %>% 
+  add_recipe(D.BodyTemp.rec)
+```
+# Train and tune
+```{r}
+# prevent R from crashing
+ncores = 4
+cl <- makePSOCKcluster(ncores)
+registerDoParallel(cl)
+
+# tuning grid. Code from Dr. Handel
+rf.grid  <- expand.grid(mtry = c(3, 4, 5, 6), min_n = c(40,50,60), trees = c(500,1000))
+rf.mod %>% parameters()
+
+# space-filling design to tune, with 25 candidate models
+rf.res <- rf.wflow %>% 
+   tune:: tune_grid(resamples = folds, 
+        grid = rf.grid,
+        metrics = metric_set(rmse))
+
+# turn off parallel cluster
+stopCluster(cl)
+```
+## Evaluation
+```{r}
+rf.best <- rf.res %>% 
+  select_best(metric = "rmse")
+# Now to fit
+rf.best.wflow <- rf.wflow %>% 
+  finalize_workflow(rf.best)
+rf.best.fit <- rf.best.wflow %>% 
+  fit(data = train_data)
+rf_pred <- predict(rf.best.fit, train_data)
+rf.res %>% show_best(n=1) 
+```
+RMSE = 1.162239
+
+## Visualization
+```{r}
+rf.res %>% show_best(metric = "rmse")
+autoplot(rf.res)
+# calculating residuals
+rf.resid <- rf.best.fit %>%
+  augment(train_data) %>% #this will add predictions to our df
+  select(.pred, BodyTemp) %>%
+  mutate(.resid = BodyTemp - .pred)
+# plot prediction vs truth
+ggplot(rf.resid, aes(x = BodyTemp, y = .pred)) + 
+  geom_point() 
+# plot resid vs pred
+ ggplot(rf.resid, aes(y = .resid, x = .pred)) +
+   geom_point() 
+
+```
+Not any better than the others, a larger amoung of trees would help. 
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+Let us figure out what type of model we should watch. 
+Here are the RMSE of all:
+- Null:            RMSE = 1.209
+- Tree Model:      RMSE = 1.193128
+- LASSO:           RMSE = 1.153742	
+- Random Forrest:  RMSE = 1.162239
+
+# Final model. 
+Looks like LASSO model did the best, but not by much. I am going to run final model on Test data
+```{r}
+# fitting model
+cl <- makePSOCKcluster(ncores)
+registerDoParallel(cl)
+# use test data
+final.mod <- best.lasso.wflow %>% last_fit(data_split) # using test data
+final.mod %>% collect_metrics()
+# turn off parallel cluster
+stopCluster(cl)
+```
+RMSE = 1.15474782, not much better than our null, Almost the same as training LASSO model
+## Visualization
+```{r}
+# residuals
+final.res <- final.mod %>%
+  augment() %>% 
+  select(.pred, BodyTemp) %>%
+  mutate(.resid = BodyTemp - .pred)
+
+# training vs truth
+ggplot(final.res, aes(x = BodyTemp, y = .pred)) + 
+  geom_point()
+
+# residuals vs trth
+ggplot(final.res, aes(y = .resid, x = .pred)) + 
+  geom_point() 
+
+
+#compare to null model
+```

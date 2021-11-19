@@ -26,7 +26,7 @@ library(doParallel)
 ##Load data
 ```{r}
 # note the use of the here() package and not absolute paths
-dataSPOT <- here::here("data","processed_data","processeddta.rds")
+dataSPOT <- here::here("files","processeddta.rds")
 # load data. 
 processeddta <-readRDS(dataSPOT)
 ```

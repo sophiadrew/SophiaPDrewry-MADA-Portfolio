@@ -1,5 +1,5 @@
 ---
-title: "Tidy Tuesday: Week XX"
+title: "Tidy Tuesday: Week 23"
 output: 
   html_document:
     toc: FALSE
@@ -11,4 +11,391 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-To be completed soon...
+Downloading packages and data
+```{R}
+library(nberwp) #to clean and arrange data
+library(tidyverse)
+library(ggthemes) #for cool graphs
+library(tidyr)
+library(skimr)
+library(janitor)
+library(stats)
+library(ggthemes)
+library(ggalt)
+library(RColorBrewer)
+library(lubridate)
+library(tidymodels)
+library(rpart)
+library(rpart.plot)
+library(parallel)
+library(doParallel)
+library(glmnet)
+
+# Data from the Tidy Tuesday Github
+marbles <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-02/marbles.csv')
+```
+
+## Data Cleaning and Pre-processing
+Now for a little bit of data cleaning
+```{R}
+skimr::skim(marbles)
+str(marbles)
+# now to fix this funky date format
+marbles <- marbles %>% separate(date, sep="-", into = c("day", "month", "year"))
+marbles$month <-match(marbles$month, month.abb)
+marbles$date <-with(marbles,paste(month, day, year, sep="/"),"%m/%d/%y")
+marbles$date <-as.Date(marbles$date, format="%m/%d/%y")
+
+# Getting rid of unwanted variables
+marbles<- subset(marbles, select = -c(source, host, notes, day, month, year))
+marbles <- marbles[-c(64, 128, 192), ] # deleting row 192 because that is the only time a marble did not compete for a reason 
+# I want to compare speed across races, so I will create a second per meter variable
+marbles$mps <- (marbles$track_length_m * marbles$number_laps)/ marbles$time_s 
+
+# ranking the place by time
+marbles = marbles %>% group_by(race) %>% mutate(rank = rank(time_s))
+
+# creating a season summary table
+season <- marbles %>%
+  mutate_if(is.numeric, funs(ifelse(is.na(.), 0, .))) %>% 
+  group_by(team_name, marble_name) %>%
+  summarise(PR = min(mps), PW = max(mps), SPM = mean(mps), Rank = mean(rank), Points = sum(points))
+
+# model dataset
+model <- subset(marbles, select = -c(1:4, 6, 7, 11))
+str(model) # rank should be a factor
+model$rank <- as.factor(model$rank)
+hist(model$mps,col='red') # ok distribution looks good
+```
+
+# Exploratory data analysis
+First lets look at the overall performance by score over time
+```{R}
+# Marble stats by team
+Table1 <- table1::table1(~mps + rank + points + avg_time_lap | team_name, data = marbles)
+Table1
+```
+
+### Marble Rank by Race
+```{R}
+marbles$marble_name = with(marbles, reorder(marble_name, rank))
+P1 <- marbles %>% 
+  ggplot(aes(x = marble_name, y = rank)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~date, scales = 'free') +
+  ggtitle("Marble Rank by Race") +
+   coord_flip() +
+   scale_color_ptol("") +
+   theme_minimal() 
+print(P1)
+```
+
+### Season total Marble Points
+```{R}
+season$marble_name = with(season, reorder(marble_name, Points))
+P2 <- season %>% 
+  ggplot(aes(x = marble_name, y = Points, fill=marble_name)) +
+  geom_bar(stat="identity", alpha=.6, width=.4) +
+   coord_flip() +
+   xlab("") +
+  ggtitle("Season total Marble Points") +
+   scale_color_ptol("") +
+   theme_minimal() 
+P2
+```
+
+### Season MPS distribution
+```{R}
+marbles$marble_name = with(marbles, reorder(marble_name, mps))
+P3 <- marbles %>% 
+  ggplot( aes(x=marble_name, y=mps, fill=marble_name)) + 
+    geom_violin() +
+    xlab("") +
+    ggtitle("Season MPS distribution") +
+    theme(legend.position="none") +
+    scale_color_ptol("") +
+    theme_minimal() 
+P3
+```
+
+### Season Best and Wost MPS
+```{R}
+P4<- season %>% ggplot(aes(y = marble_name, x = PR, xend =PW )) +  
+  geom_dumbbell(size = 1.0,
+                size_x = 3, 
+                size_xend = 3,
+                colour = "grey", 
+                colour_x = "blue", 
+                colour_xend = "red") +
+  theme_minimal() + 
+  scale_color_ptol("") +
+  labs(title = "Personal Best and Worst MPS Times",
+       x = "Meters Per Second (MPS)", y = "Team Name")
+P4
+```
+
+# Investigation on Smoggy from the Hazers Team
+Regrettably we must inform you that this years 3rd place winner, Smoggy has been accused of lead weighting - a tactic that was outlawed in the 2018 Marbula One tournament. After chemical analysis, Smoggy and the Hazers team will be disqualified from this years leader board. Lets take a look at the Hazer Team Stats. 
+```{R}
+hazers <- subset(marbles, team_name == "Hazers")
+P5 <- ggplot() +  
+  geom_line(data = hazers, aes(x = date, y = avg_time_lap, color="Smoggy")) +
+  geom_line(data = marbles, aes(x = date, y = avg_time_lap, color="Group Average"), linetype=3) +
+  theme_minimal() + 
+  scale_color_ptol("") +
+  labs(title = "Plot 1: Avg Time- Court Evidence for Smoggy v State",
+       x = " ", y = " ")
+P5
+ P6 <- ggplot() +  
+  geom_line(data = hazers, aes(x = date, y = mps, color="Smoggy")) +
+  geom_line(data = marbles, aes(x = date, y = mps, color="Group Average"), linetype=3) +
+  theme_minimal() + 
+  scale_color_ptol("") +
+  labs(title = "Plot 2: MPS- Court Evidence for Smoggy v State",
+       x = " ", y = " ")
+P6
+```
+
+_______________________________________________________________________________
+# Creating models
+We are going to try out 2 different models
+1) Generalized linear model
+2) LASSO model
+3) Ridge Regression
+ 
+First lets create a testing and training set
+### Data splitting and CV folds
+Here we are going to split the data randomly into training and testing subsets
+- Training data will be used to fit the model. 
+- Testing set will be used to evaluate the model.
+```{r}
+# Setting a seed for random number generation so if this analysis is reproduced, the same random set will be generated
+set.seed(123)
+# Subsetting 70% of data into training and 20% of data into testing
+# We using Body Temp to stratify
+data_split <- initial_split(model, prop = .7, strata = "mps") # dont want all the winners in one category
+# Creating training data
+train_data <- training(data_split)
+# Creating testing data
+test_data  <- testing(data_split)
+
+# 5-fold cross-validation, 5x repeated
+# Creating a resample object for our traiinng data
+set.seed(123)
+folds <- vfold_cv(train_data, v = 5, repeats = 5, strata = "mps") # mps is my continuous outcome
+```
+## Setting workflows & training models: Model 1 
+Setting up lr.mod that will be used for the rest of the models
+```{r}
+lr.mod <- linear_reg() %>% 
+  set_engine("lm") %>%
+  set_mode("regression")
+```
+### LM model w/ dummy 
+```{r}
+#Setting up the linear model
+D.rec <- recipe(mps ~ ., data = train_data)  %>% 
+  step_dummy(all_nominal()) %>% 
+  step_scale(mps) #scaling mps
+# Create workflow
+D.wflow <- workflow() %>% 
+  add_model(lr.mod) %>% 
+  add_recipe(D.rec)
+# Fit model to training data
+D.fit <- 
+  D.wflow %>% 
+  fit(data = train_data)
+# evaluate
+D.fit %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+```
+## Null Model
+```{R}
+# Create null formula
+N.rec <- recipe(mps ~ 1., data = train_data) 
+
+# set workflow
+N.train.wflow <-
+  workflow() %>% 
+  add_model(lr.mod) %>% 
+  add_recipe(N.rec)
+# fitting
+N.train.fit <- 
+  N.train.wflow %>% 
+  fit(data = train_data)
+# usual
+N.train.fit %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+# RMSE
+predict(N.train.fit, train_data)
+N.train.aug <- augment(N.train.fit, train_data)
+N.train.aug %>% select(mps, .pred) 
+N.train.aug %>% rmse(truth = mps, .pred)
+# RMSE = 0.06801068	
+```
+### Null model testing
+```{R}
+# fitting
+predict(N.train.fit, test_data)
+N.test.aug <- augment(N.train.fit, test_data) 
+N.test.aug %>% select(mps, .pred) 
+N.test.aug %>% #taking the root-mean square error of the model
+  rmse(truth = mps, .pred)
+# RMSE = 0.06721659	
+```
+
+## Model 2: Tree
+```{r}
+## Tuning hyperparameters
+tune_spec <- 
+  decision_tree(cost_complexity = tune(), 
+  tree_depth = tune()) %>% 
+  set_engine("rpart") %>% 
+  set_mode("regression")
+tune_spec # We will come back to these parameters
+# setting workflow
+tree.wflow <- workflow() %>%
+  add_model(tune_spec) %>%
+  add_recipe(D.rec)
+```
+## Tuning with a grid
+```{r}
+# Create a grid
+cores <- parallel::detectCores()
+cores
+ncores = 4
+cl <- makePSOCKcluster(ncores)
+registerDoParallel(cl)
+tree_grid <- grid_regular(cost_complexity(),
+                          tree_depth(),
+                          levels = 5)
+# tuning
+tree_res <- tree.wflow %>% 
+  tune_grid(resamples = folds, grid = tree_grid)
+tree_res %>% collect_metrics()
+# turn off parallel cluster
+stopCluster(cl)
+
+```
+
+```{r}
+tree_res %>%
+  collect_metrics() %>%
+  mutate(tree_depth = factor(tree_depth)) %>%
+  ggplot(aes(cost_complexity, mean, color = tree_depth)) +
+  geom_line(size = 1.5, alpha = 0.6) +
+  geom_point(size = 2) +
+  facet_wrap(~ .metric, scales = "free", nrow = 2) +
+  scale_x_log10(labels = scales::label_number()) +
+  scale_color_viridis_d(option = "plasma", begin = .9, end = 0)
+# Lets check out the top 5
+tree_res %>% show_best("rmse")
+# Now to pull out the best set of hyperparameter values for our decision tree model
+best_tree <- tree_res %>% select_best("rmse")
+# finalize workflow
+final_wf <- tree.wflow %>% finalize_workflow(best_tree)
+# final fit
+final_fit <- final_wf %>% fit(data = train_data) 
+final_fit
+tree_res %>% show_best("rmse", n = 1)
+```
+RMSE = 0.2588305		
+
+## Visualize
+```{r}
+rpart.plot(extract_fit_parsnip(final_fit)$fit)
+```
+ 
+## Model 3: LASSO
+### Building model
+```{r}
+# set workflow
+lasso.mod <- linear_reg(mode = "regression", penalty = tune(), mixture = 1) %>% 
+   set_engine("glmnet")
+lasso.wflow <- workflow() %>%
+    add_model(lasso.mod) %>%
+    add_recipe(D.rec)
+```
+## Train and tune LASSO
+### Setting cores
+```{r}
+cores <- parallel::detectCores()
+cores
+ncores = 4
+cl <- makePSOCKcluster(ncores)
+registerDoParallel(cl)
+# creating grid and tuning
+lr_reg_grid <- tibble(penalty = 10^seq(-3, 0, length.out = 30)) 
+# tuning on training data
+lasso.res <- lasso.wflow %>% 
+  tune_grid(resamples = folds,
+            grid = lr_reg_grid,
+            control = control_grid(save_pred = TRUE),
+            metrics = metric_set(rmse))
+lasso.res %>% autoplot()
+            
+# turn off parallel cluster
+stopCluster(cl)
+
+```
+## Choosing the best performing model
+```{r}
+lasso.top.models <- lasso.res %>% 
+  select_best("rmse") 
+lasso.res %>% show_best(n=1)
+# finalize workflow with the best model
+best.lasso.wflow <- lasso.wflow %>% 
+  finalize_workflow(lasso.top.models)
+# fitting best performing model
+best.lasso.fit <- best.lasso.wflow %>% 
+  fit(data = train_data)
+```
+RMSE = 0.207073
+
+## Plotting performance
+This code is borrowed from Dr. Handel
+```{r}
+x <- best.lasso.fit$fit$fit$fit
+plot(x, "lambda")
+```
+Let us figure out what type of model we should watch. 
+Here are the RMSE of all:
+- Null:            RMSE = 0.06721659	# Maybe because I did not normalize the outcome like I did in other models?
+- Tree Model:      RMSE = 0.2588305
+- LASSO:           RMSE = 0.207073
+
+Looks like tree model 
+
+# Final model
+```{r}
+cl <- makePSOCKcluster(ncores)
+registerDoParallel(cl)
+# use test data
+final.mod <- best.lasso.wflow %>% last_fit(data_split) # using test data
+final.mod %>% collect_metrics()
+# turn off parallel cluster
+stopCluster(cl)
+```
+RMSE = 0.213288, different from null, but similar to LASSO
+## Visualization
+```{r}
+# residuals
+final.res <- final.mod %>%
+  augment() %>% 
+  select(.pred, mps) %>%
+  mutate(.resid = mps - .pred)
+
+# training vs truth
+ggplot(final.res, aes(x = mps, y = .pred)) + 
+  geom_point()
+
+# residuals vs trth
+ggplot(final.res, aes(y = .resid, x = .pred)) + 
+  geom_point() 
+
+
+#compare to null model
+```
+

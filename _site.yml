@@ -1,4 +1,4 @@
-name: "My Data Analysis Portfolio"
+name: "Sophia's Data Analysis Portfolio"
 output_dir: 'docs'
 output:
   html_document:
@@ -26,6 +26,8 @@ navbar:
           href: ./TidyTuesday2.html
         - text: "Machine Learning Modeling"
           href: ./files/analysis3 copy.html  
+        - text: "El Nino/La Nina Dengue Modeling Project"
+          href: ./files/Manuscript copy.html  
           
   right:
     - icon: fa-github fa-lg

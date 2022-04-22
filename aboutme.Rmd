@@ -38,15 +38,6 @@ My name is Sophia Drewry, and I am from Kennesaw, GA. Here at UGA, I am a second
 :::
 ::::::
 
-### Course Goals
-
-This semester, I hope to really get my hands dirty with data analysis.  I have about 2 years of _light_ R use and I would describe myself as a confident novice using R and Github. 
-
-In this class I hope to...
-
-* Build a solid foundation in biostatistical analysis methods
-* Improve my data organization skills, ex. properly documenting my code in R markdown
-* Learn about "machine learning", as that is someting I have no experience in
 
 $$\\[.25in]$$
 

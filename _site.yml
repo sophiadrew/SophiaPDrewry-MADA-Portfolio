@@ -20,14 +20,12 @@ navbar:
           href: ./rcoding.html
         - text: "Visualization"
           href: ./visualization.html
-        - text: "Tidy Tuesday #1"
-          href: ./tidytuesday.html
-        - text: "Tidy Tuesday #2"
+        - text: "Tidy Tuesday"
           href: ./TidyTuesday2.html
         - text: "Machine Learning Modeling"
           href: ./files/analysis3 copy.html  
         - text: "El Nino/La Nina Dengue Modeling Project"
-          href: ./files/Manuscript copy.html  
+          href: ./files/Manuscript-copy.html  
           
   right:
     - icon: fa-github fa-lg
